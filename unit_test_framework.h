@@ -8,6 +8,7 @@
 #include <sstream>
 #include <cmath>
 #include <memory>
+#include <vector>
 
 // Place the following line of code in your test file to generate a
 // main() function:
@@ -15,7 +16,6 @@
 
 using Test_func_t = void (*)();
 
-std::string operator"" _s(const char* str, size_t);
 
 #define TEST(name) \
     void name(); \
@@ -24,15 +24,23 @@ std::string operator"" _s(const char* str, size_t);
 
 #define TEST_MAIN() \
     int main(int argc, char** argv) { \
-        for (int i = 1; i < argc; ++i) { \
-            if (argv[i] == "--show_test_names"_s) { \
-                TestSuite::get().print_test_names(std::cout); \
-                std::cout << std::flush; \
-                return 0; \
-            } \
-        } \
         return TestSuite::get().run_tests(argc, argv); \
     }
+
+
+struct TestCase
+{
+    TestCase(std::string name_, Test_func_t test_func_) :
+        name(name_), test_func(test_func_) {}
+
+    void run(bool quiet_mode);
+    void print(bool quiet_mode);
+
+    std::string name;
+    Test_func_t test_func;
+    std::string failure_msg{};
+    std::string exception_msg{};
+};
 
 
 class TestSuite
@@ -46,10 +54,16 @@ public:
     }
 
     void add_test(const std::string& test_name, Test_func_t test) {
-        tests_[test_name] = test;
+        tests_.insert({test_name, TestCase{test_name, test}});
     }
 
     int run_tests(int argc, char** argv);
+    void print_results();
+
+    void enable_quiet_mode()
+    {
+        quiet_mode = true;
+    }
 
     std::ostream& print_test_names(std::ostream& os) {
         for (const auto& test_pair : tests_) {
@@ -66,8 +80,12 @@ private:
     bool operator=(const TestSuite&) = delete;
     ~TestSuite() {}
 
+    std::vector<std::string> get_test_names_to_run(int argc, char** argv);
+
     static TestSuite* instance;
-    std::map<std::string, Test_func_t> tests_;
+    std::map<std::string, TestCase> tests_;
+
+    bool quiet_mode = false;
 };
 
 class TestSuiteDestroyer {
@@ -93,8 +111,7 @@ public:
 
     std::ostream& print(std::ostream& os) const
     {
-        os << "FAIL\n"
-           << "In test " << test_name_m << ", line " << line_number_m << ": \n"
+        os << "In test " << test_name_m << ", line " << line_number_m << ": \n"
            << reason_m << '\n';
         return os;
     }
@@ -104,12 +121,21 @@ public:
         test_name_m = move(test_name);
     }
 
+    std::string to_string() const
+    {
+        std::ostringstream oss;
+        print(oss);
+        return oss.str();
+    }
+
 private:
     std::string test_name_m;
     std::string reason_m;
     int line_number_m;
 };
 std::ostream& operator<<(std::ostream& os, const TestFailure& test_failure);
+
+// ----------------------------------------------------------------------------
 
 template<typename First, typename Second>
 void assert_equal(
