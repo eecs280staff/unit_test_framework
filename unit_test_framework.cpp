@@ -58,13 +58,13 @@ int TestSuite::run_tests(int argc, char** argv)
         {
             cout << "*** Running test: " << test_name << " ***" << endl;
             (tests_.at(test_name))();
-            cout << "\nPASS" << endl;
+            cout << "PASS" << endl;
         }
         catch (TestFailure& e)
         {
             e.set_test_name(test_name);
             failures.push_back(e);
-            cout << "\nFAIL" << endl;
+            cout << "FAIL" << endl;
         }
         catch (exception& e)
         {

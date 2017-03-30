@@ -1,6 +1,5 @@
 should_pass
 *** Running test: should_pass ***
-
 PASS
 
 --------------------------------------------------------
