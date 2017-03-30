@@ -17,7 +17,12 @@ test: $(test_exes) $(test_dir)/end_to_end_test.exe
 
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe,end_to_end_test)
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe --show_test_names,show_test_names_test)
+
+	$(call run_and_diff,$(test_dir)/end_to_end_test.exe --quiet,quiet_test)
+	$(call run_and_diff,$(test_dir)/end_to_end_test.exe -q,quiet_test)
+
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe should_pass,run_subset_of_tests_test)
+	$(call run_and_diff,$(test_dir)/end_to_end_test.exe should_pass -q should_fail,quiet_run_subset_of_tests)
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< -c -o $@

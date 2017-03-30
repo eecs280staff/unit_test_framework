@@ -17,21 +17,20 @@
 using Test_func_t = void (*)();
 
 
-#define TEST(name) \
-    void name(); \
-    static TestRegisterer register_ ## name((#name), name); \
+#define TEST(name)                                                            \
+    void name();                                                              \
+    static TestRegisterer register_##name((#name), name);                     \
     void name()
 
-#define TEST_MAIN() \
-    int main(int argc, char** argv) { \
-        return TestSuite::get().run_tests(argc, argv); \
+#define TEST_MAIN()                                                           \
+    int main(int argc, char** argv) {                                         \
+        return TestSuite::get().run_tests(argc, argv);                        \
     }
 
 
-struct TestCase
-{
-    TestCase(std::string name_, Test_func_t test_func_) :
-        name(name_), test_func(test_func_) {}
+struct TestCase {
+    TestCase(std::string name_, Test_func_t test_func_)
+        : name(name_), test_func(test_func_) {}
 
     void run(bool quiet_mode);
     void print(bool quiet_mode);
@@ -43,8 +42,7 @@ struct TestCase
 };
 
 
-class TestSuite
-{
+class TestSuite {
 public:
     static TestSuite& get() {
         if (not instance) {
@@ -60,8 +58,7 @@ public:
     int run_tests(int argc, char** argv);
     void print_results();
 
-    void enable_quiet_mode()
-    {
+    void enable_quiet_mode() {
         quiet_mode = true;
     }
 
@@ -102,27 +99,22 @@ public:
     }
 };
 
-class TestFailure
-{
+class TestFailure {
 public:
     TestFailure(std::string reason, int line_number)
-        : reason_m(move(reason)), line_number_m(line_number)
-    {}
+        : reason_m(move(reason)), line_number_m(line_number) {}
 
-    std::ostream& print(std::ostream& os) const
-    {
+    std::ostream& print(std::ostream& os) const {
         os << "In test " << test_name_m << ", line " << line_number_m << ": \n"
            << reason_m << '\n';
         return os;
     }
 
-    void set_test_name(std::string test_name)
-    {
+    void set_test_name(std::string test_name) {
         test_name_m = move(test_name);
     }
 
-    std::string to_string() const
-    {
+    std::string to_string() const {
         std::ostringstream oss;
         print(oss);
         return oss.str();
@@ -137,12 +129,10 @@ std::ostream& operator<<(std::ostream& os, const TestFailure& test_failure);
 
 // ----------------------------------------------------------------------------
 
-template<typename First, typename Second>
-void assert_equal(
-    First first, Second second, int line_number);
-template<typename First, typename Second>
-void assert_not_equal(
-    First first, Second second, int line_number);
+template <typename First, typename Second>
+void assert_equal(First first, Second second, int line_number);
+template <typename First, typename Second>
+void assert_not_equal(First first, Second second, int line_number);
 
 void assert_true(bool value, int line_number);
 void assert_false(bool value, int line_number);
@@ -150,26 +140,21 @@ void assert_false(bool value, int line_number);
 void assert_almost_equal(double first, double second, double precision,
                          int line_number);
 
-#define ASSERT_EQUAL(first, second) \
-    assert_equal((first), (second), __LINE__);
+#define ASSERT_EQUAL(first, second) assert_equal((first), (second), __LINE__);
 
-#define ASSERT_NOT_EQUAL(first, second) \
+#define ASSERT_NOT_EQUAL(first, second)                                       \
     assert_not_equal((first), (second), __LINE__);
 
-#define ASSERT_TRUE(value) \
-    assert_true((value), __LINE__);
+#define ASSERT_TRUE(value) assert_true((value), __LINE__);
 
-#define ASSERT_FALSE(value) \
-    assert_false((value), __LINE__);
+#define ASSERT_FALSE(value) assert_false((value), __LINE__);
 
-#define ASSERT_ALMOST_EQUAL(first, second, precision) \
+#define ASSERT_ALMOST_EQUAL(first, second, precision)                         \
     assert_almost_equal((first), (second), (precision), __LINE__);
 
-template<typename First, typename Second>
-void assert_equal(First first, Second second, int line_number)
-{
-    if (first == second)
-    {
+template <typename First, typename Second>
+void assert_equal(First first, Second second, int line_number) {
+    if (first == second) {
         return;
     }
     std::ostringstream reason;
@@ -177,12 +162,9 @@ void assert_equal(First first, Second second, int line_number)
     throw TestFailure(reason.str(), line_number);
 }
 
-template<typename First, typename Second>
-void assert_not_equal(
-    First first, Second second, int line_number)
-{
-    if (first != second)
-    {
+template <typename First, typename Second>
+void assert_not_equal(First first, Second second, int line_number) {
+    if (first != second) {
         return;
     }
     std::ostringstream reason;

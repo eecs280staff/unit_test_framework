@@ -1,9 +1,8 @@
-should_pass
-*** Running test: should_pass ***
+Running test: should_pass
 PASS
 
---------------------------------------------------------
---------------------------------------------------------
---------------------------------------------------------
+*** Results ***
+** Test case 'should_pass': PASS
+*** Summary ***
 Out of 1 tests run:
 0 failure(s), 0 error(s)

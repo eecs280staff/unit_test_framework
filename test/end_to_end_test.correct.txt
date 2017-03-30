@@ -1,19 +1,20 @@
-should_fail
-should_pass
-*** Running test: should_fail ***
+Running test: should_fail
 FAIL
-*** Running test: should_pass ***
+Running test: should_pass
 PASS
+Running test: throws_error
+ERROR
 
---------------------------------------------------------
---------------------------------------------------------
---------------------------------------------------------
-FAIL
-In test should_fail, line 4: 
+*** Results ***
+** Test case 'should_fail': FAIL
+In test , line 6: 
 42 != 43
 
---------------------------------------------------------
---------------------------------------------------------
---------------------------------------------------------
-Out of 2 tests run:
-1 failure(s), 0 error(s)
+** Test case 'should_pass': PASS
+** Test case 'throws_error': ERROR
+Uncaught exception in test throws_error: 
+errorrr!
+
+*** Summary ***
+Out of 3 tests run:
+1 failure(s), 1 error(s)

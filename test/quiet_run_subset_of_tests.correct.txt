@@ -1,0 +1,4 @@
+
+*** Results ***
+should_pass: PASS
+should_fail: FAIL
