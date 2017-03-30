@@ -37,6 +37,22 @@ To compile with g++ and run the test cases:
 g++ --std=c++11 my_tests.cpp unit_test_framework.cpp -o my_tests.exe
 ./my_tests.exe
 ```
+Output:
+```
+bool_is_true
+numbers_equal
+*** Running test: bool_is_true ***
+PASS
+*** Running test: numbers_equal ***
+PASS
+
+--------------------------------------------------------
+--------------------------------------------------------
+--------------------------------------------------------
+Out of 2 tests run:
+0 failure(s), 0 error(s)
+```
+
 
 ## How to write a test case: The TEST() macro
 Test cases can be declared using the special TEST() macro defined in unit_test_framework.cpp:
