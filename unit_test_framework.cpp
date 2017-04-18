@@ -12,7 +12,8 @@ using namespace std;
 // THIS IS PART OF A WORKAROUND TO DEAL WITH STATIC
 // INITIALIZATION SHENANIGANS.
 // DO NOT CHANGE THIS UNLESS YOU REEEEALLY KNOW WHAT
-// YOU'RE DOING.
+// YOU'RE DOING. CONTACT akamil@umich.edu or jameslp@umich.edu IF
+// YOU HAVE QUESTIONS ABOUT THIS.
 TestSuite* TestSuite::instance = &TestSuite::get();
 
 static TestSuiteDestroyer destroyer;
@@ -130,14 +131,33 @@ int TestSuite::run_tests(int argc, char** argv) {
 vector<string> TestSuite::get_test_names_to_run(int argc, char** argv) {
     vector<string> test_names_to_run;
     for (auto i = 1; i < argc; ++i) {
-        if (argv[i] == std::string("--show_test_names")) {
-            TestSuite::get().print_test_names(std::cout);
-            std::cout << std::flush;
+        if (argv[i] == string("--show_test_names") or
+            argv[i] == string("-n")) {
+
+            TestSuite::get().print_test_names(cout);
+            cout << flush;
             throw ExitSuite();
         }
-        else if (argv[i] == std::string("--quiet") or
-                 argv[i] == std::string("-q")) {
+        else if (argv[i] == string("--quiet") or argv[i] == string("-q")) {
             TestSuite::get().enable_quiet_mode();
+        }
+        else if (argv[i] == string("--help") or argv[i] == string("-h")) {
+            cout << "usage: " << argv[0] << " [-h]\n"
+                 << " [-n]\n"
+                 << " [-q]\n"
+                 << " [[TEST_NAME] ...]\n";
+            cout
+                << "optional arguments:\n"
+                << " -h, --help\t\t show this help message and exit\n"
+                << " -n, --show_test_names\t print the names of all "
+                   "discovered test cases and exit\n"
+                << " -q, --quiet\t\t print a reduced summary of test results\n"
+                << " TEST_NAME ...\t\t run only the test cases whose names "
+                   "are "
+                   "listed here. Note: If no test names are specified, all "
+                   "discovered tests are run by default.\n";
+
+            throw ExitSuite();
         }
         else {
             test_names_to_run.push_back(argv[i]);
@@ -180,7 +200,7 @@ void assert_almost_equal(double first, double second, double precision,
     if (abs(first - second) <= precision) {
         return;
     }
-    std::ostringstream reason;
+    ostringstream reason;
     reason << "Values too far apart: " << first << " and " << second;
     throw TestFailure(reason.str(), line_number);
 }

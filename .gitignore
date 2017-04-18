@@ -30,3 +30,4 @@
 *.d
 *.out.txt
 .vscode
+.DS_Store
