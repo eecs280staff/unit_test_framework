@@ -142,10 +142,8 @@ vector<string> TestSuite::get_test_names_to_run(int argc, char** argv) {
             TestSuite::get().enable_quiet_mode();
         }
         else if (argv[i] == string("--help") or argv[i] == string("-h")) {
-            cout << "usage: " << argv[0] << " [-h]\n"
-                 << " [-n]\n"
-                 << " [-q]\n"
-                 << " [[TEST_NAME] ...]\n";
+            cout << "usage: " << argv[0]
+                 << " [-h] [-n] [-q] [[TEST_NAME] ...]\n";
             cout
                 << "optional arguments:\n"
                 << " -h, --help\t\t show this help message and exit\n"
@@ -155,7 +153,8 @@ vector<string> TestSuite::get_test_names_to_run(int argc, char** argv) {
                 << " TEST_NAME ...\t\t run only the test cases whose names "
                    "are "
                    "listed here. Note: If no test names are specified, all "
-                   "discovered tests are run by default.\n";
+                   "discovered tests are run by default."
+                << endl;
 
             throw ExitSuite();
         }
