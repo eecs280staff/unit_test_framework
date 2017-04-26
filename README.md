@@ -39,16 +39,15 @@ g++ --std=c++11 my_tests.cpp unit_test_framework.cpp -o my_tests.exe
 ```
 Output:
 ```
-bool_is_true
-numbers_equal
-*** Running test: bool_is_true ***
+Running test: bool_is_true
 PASS
-*** Running test: numbers_equal ***
+Running test: numbers_equal
 PASS
 
---------------------------------------------------------
---------------------------------------------------------
---------------------------------------------------------
+*** Results ***
+** Test case 'bool_is_true': PASS
+** Test case 'numbers_equal': PASS
+*** Summary ***
 Out of 2 tests run:
 0 failure(s), 0 error(s)
 ```
@@ -76,8 +75,7 @@ TEST(test_a_thing) {
 You can use any amount of these special asserts in your test cases. You can also use the special asserts in helper functions.
 
 ### Equality checks:
-For these special asserts, first and second must be comparable using the `==` operator and must be printable using the `<<` operator. Within these restrictions, first and second may be any type.
-
+For these special asserts, first and second must be comparable using the `==` (for ASSERT_EQUAL) operator or the `!=` operator (for ASSERT_NOT_EQUAL). Other than this restriction, `first` and `second` may be any type.
 
 * **ASSERT_EQUAL**(*first*, *second*)
     * If `first == second` evaluates to false, the test will fail.
@@ -93,3 +91,36 @@ For these special asserts, first and second must be comparable using the `==` op
 ### Floating-point comparison:
 * **ASSERT_ALMOST_EQUAL**(*double first*, *double second*, *double precision*)
     * If `first` and `second` are not equal within `precision`, the test will fail.
+    
+## Command line options
+```
+usage: ./my_tests.exe [-h] [-n] [-q] [[TEST_NAME] ...]
+optional arguments:
+ -h, --help	             show this help message and exit
+ -n, --show_test_names	 print the names of all discovered test cases and exit
+ -q, --quiet             print a reduced summary of test results
+ TEST_NAME ...           run only the test cases whose names are listed here. Note: If no test names are specified, all discovered tests are run by default.
+```
+Output from `./my_tests.exe --show_test_names`:
+```
+bool_is_true
+numbers_equal
+```
+Output from `./my_tests.exe --quiet`:
+```
+
+*** Results ***
+bool_is_true: PASS
+numbers_equal: PASS
+```
+Output from `./my_tests.exe bool_is_true`:
+```
+Running test: bool_is_true
+PASS
+
+*** Results ***
+** Test case 'bool_is_true': PASS
+*** Summary ***
+Out of 1 tests run:
+0 failure(s), 0 error(s)
+```
