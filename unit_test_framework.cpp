@@ -176,6 +176,30 @@ ostream& operator<<(ostream& os, const TestFailure& test_failure) {
 
 //------------------------------------------------------------------------------
 
+#if defined(__clang__) || defined(__GLIBCXX__) || defined(__GLIBCPP__)
+#include <cxxabi.h>
+#include <cstdlib>
+string demangle(const char* typeinfo_name) {
+    int status = 0;
+    char* demangled =
+        abi::__cxa_demangle(typeinfo_name, nullptr, nullptr, &status);
+    if (status == 0) {
+        string result = demangled;
+        std::free(demangled);
+        return result;
+    }
+    else {
+        return typeinfo_name;
+    }
+}
+#else
+string demangle(const char* typeinfo_name) {
+    return typeinfo_name;
+}
+#endif  // defined(__clang__) || defined(__GLIBCXX__) || defined(__GLIBCPP__)
+
+//------------------------------------------------------------------------------
+
 void assert_true(bool value, int line_number) {
     if (value) {
         return;

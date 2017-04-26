@@ -9,6 +9,8 @@
 #include <cmath>
 #include <memory>
 #include <vector>
+#include <typeinfo>
+
 
 // Place the following line of code in your test file to generate a
 // main() function:
@@ -129,6 +131,38 @@ std::ostream& operator<<(std::ostream& os, const TestFailure& test_failure);
 
 // ----------------------------------------------------------------------------
 
+// demangle, print_helper, and print contributed by Amir Kamil <akamil@umich.edu>
+
+// Demangles a string produced by std::type_info::name.
+std::string demangle(const char* typeinfo_name);
+
+// This version of print_helper will be called when T has an available
+// stream insertion operator overload.
+template <class T>
+auto print_helper(std::ostream& os, const T& t, int) -> decltype(os << t)& {
+    return os << t;
+}
+
+// This version of print_helper will be called when T does not have an
+// available stream insertion operator overload.
+template <class T>
+std::ostream& print_helper(std::ostream& os, const T&, ...) {
+    return os << "<" << demangle(typeid(T).name()) << " object>";
+}
+
+// Attempts to print the given object to the given stream.
+// If T has an available stream insertion operator overload, that
+// operator is used. Otherwise, a generic representation of the object
+// is printed to os.
+template <class T>
+std::ostream& print(std::ostream& os, const T& t) {
+    // The 3rd parameter is needed so that the first overload of
+    // print_helper is preferred.
+    return print_helper(os, t, 0);
+}
+
+// ----------------------------------------------------------------------------
+
 template <typename First, typename Second>
 void assert_equal(First first, Second second, int line_number);
 template <typename First, typename Second>
@@ -158,7 +192,9 @@ void assert_equal(First first, Second second, int line_number) {
         return;
     }
     std::ostringstream reason;
-    reason << first << " != " << second;
+    print(reason, first);
+    reason << " != ";
+    print(reason, second);
     throw TestFailure(reason.str(), line_number);
 }
 
@@ -168,7 +204,11 @@ void assert_not_equal(First first, Second second, int line_number) {
         return;
     }
     std::ostringstream reason;
-    reason << "Values unexpectedly equal: " << first << " == " << second;
+
+    reason << "Values unexpectedly equal: ";
+    print(reason, first);
+    reason << " == ";
+    print(reason, second);
     throw TestFailure(reason.str(), line_number);
 }
 
