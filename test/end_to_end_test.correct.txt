@@ -1,3 +1,7 @@
+Running test: assert_almost_equal_precision_infinite
+FAIL
+Running test: assert_almost_equal_precision_round
+FAIL
 Running test: should_fail
 FAIL
 Running test: should_pass
@@ -6,6 +10,14 @@ Running test: throws_error
 ERROR
 
 *** Results ***
+** Test case 'assert_almost_equal_precision_infinite': FAIL
+In test , line 22: 
+Values too far apart: 0.30000000000000004441 and 0.2999999999999999889
+
+** Test case 'assert_almost_equal_precision_round': FAIL
+In test , line 18: 
+Values too far apart: 0.75 and 0.5
+
 ** Test case 'should_fail': FAIL
 In test , line 6: 
 42 != 43
@@ -16,5 +28,5 @@ Uncaught exception in test throws_error:
 errorrr!
 
 *** Summary ***
-Out of 3 tests run:
-1 failure(s), 1 error(s)
+Out of 5 tests run:
+3 failure(s), 1 error(s)

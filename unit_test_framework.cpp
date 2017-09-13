@@ -224,6 +224,10 @@ void assert_almost_equal(double first, double second, double precision,
         return;
     }
     ostringstream reason;
+    // For now, we'll just set the precision arbitrarily high.
+    // In the future, we may decide to add an option to configure
+    // the output precision.
+    reason.precision(20);
     reason << "Values too far apart: " << first << " and " << second;
     throw TestFailure(reason.str(), line_number);
 }
