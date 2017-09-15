@@ -15,6 +15,12 @@ all: $(test_exes)
 test: $(test_exes) $(test_dir)/end_to_end_test.exe
 	./$(test_dir)/test_special_asserts.exe
 
+	$(CXX) $(CXXFLAGS) -I. \
+					   $(test_dir)/test_name_conflict_file_with_non_static_func.cpp \
+					   $(test_dir)/test_name_conflict_file_with_tests.cpp \
+					   unit_test_framework.cpp \
+					   -o no_conflict.exe
+
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe,end_to_end_test)
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe --show_test_names,show_test_names_test)
 

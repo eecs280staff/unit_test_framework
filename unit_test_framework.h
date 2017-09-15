@@ -20,9 +20,9 @@ using Test_func_t = void (*)();
 
 
 #define TEST(name)                                                            \
-    void name();                                                              \
+    static void name();                                                       \
     static TestRegisterer register_##name((#name), name);                     \
-    void name()
+    static void name()
 
 #define TEST_MAIN()                                                           \
     int main(int argc, char** argv) {                                         \
