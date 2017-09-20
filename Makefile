@@ -46,7 +46,7 @@ endef
 
 .PHONY: clean clean_all test
 clean:
-	rm -vrf */*.exe *.ii */*.o *.o *.dSYM */*.out.txt
+	rm -vrf *.exe *.o *.ii */*.exe *.ii */*.o *.o *.dSYM */*.out.txt
 
 clean_all: clean
 	rm -vf *.d */*.d
