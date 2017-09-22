@@ -11,6 +11,10 @@
 #include <vector>
 #include <typeinfo>
 
+#if _CPPLIB_VER
+// For compatibility with Visual Studio
+#include <ciso646>
+#endif
 
 // Place the following line of code in your test file to generate a
 // main() function:
