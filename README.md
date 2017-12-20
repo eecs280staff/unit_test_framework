@@ -28,8 +28,11 @@ TEST(bool_is_true) {
 }
 
 // DO NOT REMOVE
-// Generates a main() function that runs all of your tests. 
-TEST_MAIN();  
+// Generates a main() function that runs all of your tests.
+// Note: Some versions of g++ incorrectly produce a warning about empty
+// statements when using the -pedantic flag. Therefore, we will not put
+// a semicolon after the TEST_MAIN() macro.
+TEST_MAIN()
 ```
 
 To compile with g++ and run the test cases:
@@ -91,7 +94,7 @@ For these special asserts, first and second must be comparable using the `==` (f
 ### Floating-point comparison:
 * **ASSERT_ALMOST_EQUAL**(*double first*, *double second*, *double precision*)
     * If `first` and `second` are not equal within `precision`, the test will fail.
-    
+
 ## Command line options
 ```
 usage: ./my_tests.exe [-h] [-n] [-q] [[TEST_NAME] ...]
