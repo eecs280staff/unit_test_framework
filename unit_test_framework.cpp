@@ -40,8 +40,9 @@ void TestCase::run(bool quiet_mode) {
     }
     catch (exception& e) {
         ostringstream oss;
-        oss << "Uncaught exception in test " << name << ": " << endl;
-        oss << e.what() << endl;
+        oss << "Uncaught " << demangle(typeid(e).name()) << " in test \""
+            << name << "\": \n";
+        oss << e.what() << '\n';
         exception_msg = oss.str();
 
         if (not quiet_mode) {
@@ -55,7 +56,7 @@ void TestCase::print(bool quiet_mode) {
         cout << name << ": ";
     }
     else {
-        cout << "** Test case '" << name << "': ";
+        cout << "** Test case \"" << name << "\": ";
     }
 
     if (not failure_msg.empty()) {

@@ -10,21 +10,21 @@ Running test: throws_error
 ERROR
 
 *** Results ***
-** Test case 'assert_almost_equal_precision_infinite': FAIL
+** Test case "assert_almost_equal_precision_infinite": FAIL
 In test , line 22: 
 Values too far apart: 0.30000000000000004441 and 0.2999999999999999889
 
-** Test case 'assert_almost_equal_precision_round': FAIL
+** Test case "assert_almost_equal_precision_round": FAIL
 In test , line 18: 
 Values too far apart: 0.75 and 0.5
 
-** Test case 'should_fail': FAIL
+** Test case "should_fail": FAIL
 In test , line 6: 
 42 != 43
 
-** Test case 'should_pass': PASS
-** Test case 'throws_error': ERROR
-Uncaught exception in test throws_error: 
+** Test case "should_pass": PASS
+** Test case "throws_error": ERROR
+Uncaught std::runtime_error in test "throws_error": 
 errorrr!
 
 *** Summary ***
