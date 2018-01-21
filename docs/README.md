@@ -11,6 +11,11 @@ Table of contents
 
 ## Setting Up
 First, you will need to download the files `unit_test_framework.h` and `unit_test_framework.cpp` and put them in the same folder as the rest of the lab files. 
+```console
+$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.cpp
+$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.h
+```
+
 Second, create a file called `lab02_tests.cpp`. Add the following code to `lab02_tests.cpp`:
 
 ```c++
