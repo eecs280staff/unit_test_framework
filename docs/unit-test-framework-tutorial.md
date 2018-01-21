@@ -1,6 +1,14 @@
 # Tutorial: Unit Test Framework
 In this tutorial, you will learn how to write test cases using a lightweight framework that functions similarly to unit test frameworks used in real-life software development.
 
+Table of contents
+- [Setting Up](#setting-up)
+- [Special Test Assertions](#special-test-assertions)
+- [Example: eecs280math_tests.cpp from Lab 1](#example-eecs280math_testscpp-from-lab-1)
+- [Write Unit Tests for `slideright()` and `flip()`](#write-unit-tests-for-slideright-and-flip`)
+- [Write a `compare_arrays()` Function](#write-a-compare_arrays-function)
+- [Extra: Convert your P1 Tests to use the Framework](#extra-convert-your-p1-tests-to-use-the-framework)
+
 ## Setting Up
 First, you will need to download the files `unit_test_framework.h` and `unit_test_framework.cpp` and put them in the same folder as the rest of the lab files. 
 Second, create a file called `lab02_tests.cpp`. Add the following code to `lab02_tests.cpp`:
