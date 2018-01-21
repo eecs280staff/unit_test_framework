@@ -2,17 +2,17 @@
 
 The tutorial is in [docs/unit-test-framework-tutorial.md](docs/unit-test-framework-tutorial.md).
 
-This library is intended to be a lightweight C++ unit testing framework suitable for students to use in their programming projects. It consists of one .h/.cpp compilation unit, which makes it easy to get up and running.
+This library is intended to be a lightweight C++ unit testing framework suitable for students to use in their programming projects. It consists of one `.h`/`.cpp` compilation unit, which makes it easy to get up and running.
 
 ## Dependencies
 This library relies on C++11 features.
 
 ## Installation
-Simply copy the files unit_test_framework.cpp and unit_test_framework.h into your project, `#include` the .h file, and link with the .cpp file. No special linker flags are needed.
+Simply copy the files `unit_test_framework.cpp` and `unit_test_framework.h` into your project, `#include` the `.h` file, and link with the `.cpp` file. No special linker flags are needed.
 
 ## Quickstart
 Below is a working example of a test suite:
-```
+```c++
 // File: my_tests.cpp
 
 #include "unit_test_framework.h"
@@ -38,12 +38,9 @@ TEST_MAIN()
 ```
 
 To compile with g++ and run the test cases:
-```
-g++ --std=c++11 my_tests.cpp unit_test_framework.cpp -o my_tests.exe
+```console
+$ g++ --std=c++11 my_tests.cpp unit_test_framework.cpp -o my_tests.exe
 ./my_tests.exe
-```
-Output:
-```
 Running test: bool_is_true
 PASS
 Running test: numbers_equal
@@ -58,11 +55,11 @@ Out of 2 tests run:
 ```
 
 
-## How to write a test case: The TEST() macro
-Test cases can be declared using the special TEST() macro defined in unit_test_framework.cpp:
+## How to write a test case: The `TEST()` macro
+Test cases can be declared using the special `TEST()` macro defined in `unit_test_framework.cpp`:
 
 Skeleton:
-```
+```c++
 TEST(<test_name>) {
     // test case code
 }
@@ -70,7 +67,7 @@ TEST(<test_name>) {
 Replace `<test_name>` with the name of the test case. Note that `<test_name>` must be a valid C++ function name.
 
 Full:
-```
+```c++
 TEST(test_a_thing) {
     // test case code
 }
@@ -98,7 +95,8 @@ For these special asserts, first and second must be comparable using the `==` (f
     * If `first` and `second` are not equal within `precision`, the test will fail.
 
 ## Command line options
-```
+```console
+$ ./my_tests.exe -h
 usage: ./my_tests.exe [-h] [-n] [-q] [[TEST_NAME] ...]
 optional arguments:
  -h, --help	             show this help message and exit
@@ -106,20 +104,22 @@ optional arguments:
  -q, --quiet             print a reduced summary of test results
  TEST_NAME ...           run only the test cases whose names are listed here. Note: If no test names are specified, all discovered tests are run by default.
 ```
-Output from `./my_tests.exe --show_test_names`:
-```
+
+```console
+$ ./my_tests.exe --show_test_names
 bool_is_true
 numbers_equal
 ```
-Output from `./my_tests.exe --quiet`:
-```
 
+```console
+$ ./my_tests.exe --quiet
 *** Results ***
 bool_is_true: PASS
 numbers_equal: PASS
 ```
-Output from `./my_tests.exe bool_is_true`:
-```
+
+```console
+$ ./my_tests.exe bool_is_true
 Running test: bool_is_true
 PASS
 
