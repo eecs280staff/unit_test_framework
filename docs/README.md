@@ -5,7 +5,7 @@ Table of contents
 - [Setting Up](#setting-up)
 - [Special Test Assertions](#special-test-assertions)
 - [Example: eecs280math_tests.cpp from Lab 1](#example-eecs280math_testscpp-from-lab-1)
-- [Write Unit Tests for `slideright()` and `flip()`](#write-unit-tests-for-slideright-and-flip`)
+- [Write Unit Tests for `slideright()` and `flip()`](#write-unit-tests-for-slideright-and-flip)
 - [Write a `compare_arrays()` Function](#write-a-compare_arrays-function)
 - [Extra: Convert your P1 Tests to use the Framework](#extra-convert-your-p1-tests-to-use-the-framework)
 
