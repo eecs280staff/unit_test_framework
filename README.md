@@ -1,17 +1,39 @@
 # Simple C++ Unit Testing
-This library is intended to be a lightweight C++ unit testing framework suitable for students to use in their programming projects. It consists of one `.h`/`.cpp` compilation unit, which makes it easy to get up and running.
+A lightweight, easy to use, C++ unit testing framework suitable.  It consists of a single `.h`/`.cpp` compilation unit, written in C++11.
 
 Publicly available tutorial: [https://eecs280staff.github.io/unit_test_framework/](https://eecs280staff.github.io/unit_test_framework/)
 
 
-## Dependencies
-This library relies on C++11 features.
-
-## Installation
-Simply copy the files `unit_test_framework.cpp` and `unit_test_framework.h` into your project, `#include` the `.h` file, and link with the `.cpp` file. No special linker flags are needed.
-
 ## Quickstart
-Below is a working example of a test suite:
+Install the unit test framework by copying `unit_test_framework.cpp` and `unit_test_framework.h` into your project.
+```console
+$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.cpp
+$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.h
+```
+
+Get the unit test example.
+```console
+$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/my_tests.cpp
+```
+
+Compile and run.
+```console
+$ g++ --std=c++11 my_tests.cpp unit_test_framework.cpp -o my_tests.exe
+$ ./my_tests.exe
+Running test: bool_is_true
+PASS
+Running test: numbers_equal
+PASS
+
+*** Results ***
+** Test case 'bool_is_true': PASS
+** Test case 'numbers_equal': PASS
+*** Summary ***
+Out of 2 tests run:
+0 failure(s), 0 error(s)
+```
+
+The example `my_tests.cpp` looks like this:
 ```c++
 // File: my_tests.cpp
 
@@ -35,23 +57,6 @@ TEST(bool_is_true) {
 // statements when using the -pedantic flag. Therefore, we will not put
 // a semicolon after the TEST_MAIN() macro.
 TEST_MAIN()
-```
-
-To compile with g++ and run the test cases:
-```console
-$ g++ --std=c++11 my_tests.cpp unit_test_framework.cpp -o my_tests.exe
-./my_tests.exe
-Running test: bool_is_true
-PASS
-Running test: numbers_equal
-PASS
-
-*** Results ***
-** Test case 'bool_is_true': PASS
-** Test case 'numbers_equal': PASS
-*** Summary ***
-Out of 2 tests run:
-0 failure(s), 0 error(s)
 ```
 
 
