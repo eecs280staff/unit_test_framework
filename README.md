@@ -1,8 +1,8 @@
 # Simple C++ Unit Testing
-
-The tutorial is in [docs/unit-test-framework-tutorial.md](docs/unit-test-framework-tutorial.md).
-
 This library is intended to be a lightweight C++ unit testing framework suitable for students to use in their programming projects. It consists of one `.h`/`.cpp` compilation unit, which makes it easy to get up and running.
+
+Publicly available tutorial: [https://eecs280staff.github.io/unit_test_framework/](https://eecs280staff.github.io/unit_test_framework/)
+
 
 ## Dependencies
 This library relies on C++11 features.
