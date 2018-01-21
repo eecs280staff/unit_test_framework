@@ -9,7 +9,7 @@ Second, create a file called `lab02_tests.cpp`. Add the following code to `lab02
 #include "lab02.h"
 #include "unit_test_framework.h"
 
-// We define a test case with the TEST(<test_name>) macro. 
+// We define a test case with the TEST(<test_name>) macro.
 // <test_name> can be any valid C++ function name.
 TEST(true_is_true) {
     ASSERT_TRUE(true);
@@ -31,15 +31,9 @@ You’re probably wondering why some of the syntax in this code looks unusual. T
   - `ASSERT_TRUE()` is one of several special test assertion preprocessor macros that you can use to check conditions in your test cases. You’ll be using these instead of `assert()` in your unit tests. These will be demonstrated in more detail in the next section.
 
 Compile and run this test case with the following two commands:
-
-```
+```console
 $ g++ -Wall -Werror -pedantic -O1 -std=c++11 lab02_tests.cpp unit_test_framework.cpp -o lab02_tests.exe
-
 $ ./lab02_tests.exe
-```
-
-Output:
-```
 Running test: numbers_are_equal
 PASS
 Running test: true_is_true
@@ -54,12 +48,8 @@ Out of 2 tests run:
 ```
 
 Another nice feature of the framework is that we can tell it to run only a subset of our test cases. If we wanted to only run the test `numbers_are_equal`, we could do it with this command:
-```
+```console
 $ ./lab02_tests.exe numbers_are_equal
-```
-
-Output:
-```
 Running test: numbers_are_equal
 PASS
 
@@ -165,9 +155,8 @@ TEST_MAIN()
 
 Add at least two test cases each for `slideRight()` and `flip()` to `lab02_tests.cpp`. 
 Compile and run the tests with the following commands:
-```
+```console
 $ g++ -Wall -Werror -pedantic -O1 -std=c++11 lab02.cpp lab02_tests.cpp unit_test_framework.cpp -o lab02_tests.exe
-
 $ ./lab02_tests.exe
 ```
 
