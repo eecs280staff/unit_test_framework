@@ -17,7 +17,7 @@ In this tutorial, you will learn how to write test cases using a lightweight fra
 
 # Setting Up
 
-First, you will need to download the files `unit_test_framework.h` and `unit_test_framework.cpp` and put them in the same folder as the rest of the lab files. 
+First, you will need the files `unit_test_framework.h` and `unit_test_framework.cpp`. This files are available with the starter files for Lab 2, but you can also download them with the following commands.
 
 ```console
 $ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.cpp
@@ -99,6 +99,7 @@ Assertion | Description
 <code>ASSERT_FALSE(<i>bool value</i>)</code> | If `value` is true, the test will fail.
 <code>ASSERT_ALMOST_EQUAL(<i>double first</i>, <i>double second</i>, <i>double precision</i>)</code> | If `first` and `second` are not equal within `precision`, the test will fail.
 
+<!-- Lab 1 changed!
 # Example: `eecs280math_tests.cpp` from Lab 1
 
 In Lab 1, we provided you with a test case example that used `assert()` to check the correctness of an `add()` function:
@@ -178,10 +179,11 @@ TEST(add_basic) {
 
 TEST_MAIN()
 ```
+-->
 
 # Write Unit Tests for `slideright()` and `flip()` (Lab 2)
 
-Add at least two test cases each for `slideRight()` and `flip()` to `lab02_tests.cpp`. 
+Add at least two test cases each for `slideRight()` and `flip()` to `lab02_tests.cpp`.
 Compile and run the tests with the following commands:
 
 ```console
@@ -192,6 +194,8 @@ $ ./lab02_tests.exe
 # Write a `compare_arrays()` Function (Lab 2)
 
 You may have noticed some duplicated code in your test cases, particularly when checking the expected and actual contents of arrays. Write a function called `compare_arrays()` that takes in two arrays and their lengths and checks that the contents of those arrays are equal using the frameworks special assertions. Then, refactor your test cases to use `compare_arrays()` instead of duplicating code.
+
+**Note**: Since `compare_arrays()` is a test helper, it should be within `lab02_tests.cpp`!
 
 # Extra: Convert your Project 1 Tests to use the Framework
 
