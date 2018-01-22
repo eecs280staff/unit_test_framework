@@ -8,7 +8,7 @@ In this tutorial, you will learn how to write test cases using a lightweight fra
 
 - [Setting Up](#setting-up)
 - [Special Test Assertions](#special-test-assertions)
-- [Example: `eecs280math_tests.cpp` from Lab 1](#example-eecs280math_testscpp-from-lab-1)
+- [Example: Tests for an `add()` function](#example-tests-for-an-add-function)
 - [Write Unit Tests for `slideright()` and `flip()` (Lab 2)](#write-unit-tests-for-slideright-and-flip-lab-2)
 - [Write a `compare_arrays()` Function (Lab 2)](#write-a-compare_arrays-function-lab-2)
 - [Extra: Convert your Project 1 Tests to use the Framework](#extra-convert-your-project-1-tests-to-use-the-framework)
@@ -17,7 +17,7 @@ In this tutorial, you will learn how to write test cases using a lightweight fra
 
 # Setting Up
 
-First, you will need the files `unit_test_framework.h` and `unit_test_framework.cpp`. This files are available with the starter files for Lab 2, but you can also download them with the following commands.
+First, you will need the files `unit_test_framework.h` and `unit_test_framework.cpp`. These files are available with the starter files for Lab 2, but you can also download them with the following commands.
 
 ```console
 $ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.cpp
@@ -99,10 +99,18 @@ Assertion | Description
 <code>ASSERT_FALSE(<i>bool value</i>)</code> | If `value` is true, the test will fail.
 <code>ASSERT_ALMOST_EQUAL(<i>double first</i>, <i>double second</i>, <i>double precision</i>)</code> | If `first` and `second` are not equal within `precision`, the test will fail.
 
-<!-- Lab 1 changed!
-# Example: `eecs280math_tests.cpp` from Lab 1
+# Example: Tests for an `add()` function
 
-In Lab 1, we provided you with a test case example that used `assert()` to check the correctness of an `add()` function:
+Suppose we have an `add()` function that computes the sum of two
+`double` arguments:
+
+```c++
+double add(double first, double second) {
+  return first + second;
+}
+```
+
+We could write a test case for `add()` using `assert()` as follows:
 
 ```c++
 void add_test_basic();
@@ -131,6 +139,12 @@ bool doubles_close(double first, double second, double range) {
 }
 ```
 
+The `doubles_close()` function above determines if two `double` values
+are equal to each other within a given range of precision. Since
+`double` values are not exact, it isn't safe to compare non-integral
+`double` values with the == operator.
+
+Let's rewrite the test case above using the unit test framework.
 First, let’s turn `add_test_basic` into a `TEST()` and replace `assert()` with `ASSERT_TRUE()`:
 
 ```c++
@@ -179,7 +193,6 @@ TEST(add_basic) {
 
 TEST_MAIN()
 ```
--->
 
 # Write Unit Tests for `slideright()` and `flip()` (Lab 2)
 
