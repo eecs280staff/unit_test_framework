@@ -16,7 +16,7 @@
 
 // Place the following line of code in your test file to generate a
 // main() function:
-// TEST_MAIN();
+// TEST_MAIN()
 
 using Test_func_t = void (*)();
 
