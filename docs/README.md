@@ -54,7 +54,7 @@ You’re probably wondering why some of the syntax in this code looks unusual. T
 Compile and run this test case with the following two commands:
 
 ```console
-$ g++ -Wall -Werror -pedantic -g -std=c++11 lab02_tests.cpp unit_test_framework.cpp -o lab02_tests.exe
+$ g++ -Wall -Werror -pedantic -g -std=c++11 lab02.cpp lab02_tests.cpp unit_test_framework.cpp -o lab02_tests.exe
 $ ./lab02_tests.exe
 Running test: numbers_are_equal
 PASS
@@ -196,13 +196,25 @@ TEST_MAIN()
 
 # Write Unit Tests for `slideright()` and `flip()` (Lab 2)
 
-Add at least two test cases each for `slideRight()` and `flip()` to `lab02_tests.cpp`.
+Add test cases for `slideRight()` and `flip()` to `lab02_tests.cpp`.
+
 Compile and run the tests with the following commands:
 
 ```console
 $ g++ -Wall -Werror -pedantic -O1 -std=c++11 lab02.cpp lab02_tests.cpp unit_test_framework.cpp -o lab02_tests.exe
 $ ./lab02_tests.exe
 ```
+
+Of course, if you run your tests against your own (correct) implementations
+in lab02.cpp, the tests should all pass. (We call tests that pass when run
+against a correct implementation _valid_.) You can temporarily change one of
+your functions to contain a bug and observe that some tests fail.
+
+Once you feel your tests are thorough, submit `lab02_tests.cpp` to the lab 2
+autograder. It will check your tests against a set of buggy implementations
+of `slideRight` and `flip`. To earn points for the lab, your tests must detect
+(i.e. fail when run against) each of the bugs. Note that the autograder will
+discard any tests that are not valid when checked against a correct solution.
 
 # Write a `compare_arrays()` Function (Lab 2)
 
