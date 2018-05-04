@@ -206,10 +206,15 @@ $ ./lab02_tests.exe
 ```
 
 Of course, if you run your tests against your own (correct) implementations
-in lab02.cpp, the tests should all pass. You can temporarily change one of
+in lab02.cpp, the tests should all pass. (We call tests that pass when run
+against a correct implementation _valid_.) You can temporarily change one of
 your functions to contain a bug and observe that some tests fail.
 
-Once you feel your tests are thorough, submit `lab02_tests.cpp` to the lab 2 autograder. It will check your tests against a set of buggy implementations of `slideRight` and `flip`. To earn points for the lab, your tests must detect (i.e. fail when run against) each of the bugs. 
+Once you feel your tests are thorough, submit `lab02_tests.cpp` to the lab 2
+autograder. It will check your tests against a set of buggy implementations
+of `slideRight` and `flip`. To earn points for the lab, your tests must detect
+(i.e. fail when run against) each of the bugs. Note that the autograder will
+discard any tests that are not valid when checked against a correct solution.
 
 # Write a `compare_arrays()` Function (Lab 2)
 
