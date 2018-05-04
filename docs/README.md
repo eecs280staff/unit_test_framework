@@ -196,13 +196,20 @@ TEST_MAIN()
 
 # Write Unit Tests for `slideright()` and `flip()` (Lab 2)
 
-Add at least two test cases each for `slideRight()` and `flip()` to `lab02_tests.cpp`.
+Add test cases for `slideRight()` and `flip()` to `lab02_tests.cpp`.
+
 Compile and run the tests with the following commands:
 
 ```console
 $ g++ -Wall -Werror -pedantic -O1 -std=c++11 lab02.cpp lab02_tests.cpp unit_test_framework.cpp -o lab02_tests.exe
 $ ./lab02_tests.exe
 ```
+
+Of course, if you run your tests against your own (correct) implementations
+in lab02.cpp, the tests should all pass. You can temporarily change one of
+your functions to contain a bug and observe that some tests fail.
+
+Once you feel your tests are thorough, submit `lab02_tests.cpp` to the lab 2 autograder. It will check your tests against a set of buggy implementations of `slideRight` and `flip`. To earn points for the lab, your tests must detect (i.e. fail when run against) each of the bugs. 
 
 # Write a `compare_arrays()` Function (Lab 2)
 
