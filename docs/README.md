@@ -54,7 +54,7 @@ You’re probably wondering why some of the syntax in this code looks unusual. T
 Compile and run this test case with the following two commands:
 
 ```console
-$ g++ -Wall -Werror -pedantic -g -std=c++11 lab02_tests.cpp unit_test_framework.cpp -o lab02_tests.exe
+$ g++ -Wall -Werror -pedantic -g -std=c++11 lab02.cpp lab02_tests.cpp unit_test_framework.cpp -o lab02_tests.exe
 $ ./lab02_tests.exe
 Running test: numbers_are_equal
 PASS
