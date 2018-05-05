@@ -33,11 +33,11 @@ Second, create a file called `lab02_tests.cpp`. Add the following code to `lab02
 // We define a test case with the TEST(<test_name>) macro.
 // <test_name> can be any valid C++ function name.
 TEST(true_is_true) {
-    ASSERT_TRUE(true);
+  ASSERT_TRUE(true);
 }
 
 TEST(numbers_are_equal) {
-    ASSERT_EQUAL(42, 42);
+  ASSERT_EQUAL(42, 42);
 }
 
 TEST_MAIN() // No semicolon!
@@ -87,7 +87,7 @@ You can pass any number of test names as command line arguments, and it will onl
 
 # Special Test Assertions
 
-One of the main reasons for using the special assertions provided by the framework is that they allow the framework to run all of your tests and report which ones passed and which ones failed. As you may have noticed, when you use regular `assert()` in your test cases, they automatically stop at the first failure. This can make it difficult to debug errors in one test that are actually caused by function whose test cases didn’t get a chance to run yet.
+One of the main reasons for using the special assertions provided by the framework is that they allow the framework to run all of your tests and report which ones passed and which ones failed. As you may have noticed, when you use regular `assert()` in your test cases, they automatically stop at the first failure. This can make it difficult to debug errors in one test that are actually caused by a function whose test cases didn’t get a chance to run yet.
 
 Here is a summary of all the special assertions that the framework provides:
 
@@ -218,7 +218,7 @@ discard any tests that are not valid when checked against a correct solution.
 
 # Write a `compare_arrays()` Function (Lab 2)
 
-You may have noticed some duplicated code in your test cases, particularly when checking the expected and actual contents of arrays. Write a function called `compare_arrays()` that takes in two arrays and their lengths and checks that the contents of those arrays are equal using the frameworks special assertions. Then, refactor your test cases to use `compare_arrays()` instead of duplicating code.
+You may have noticed some duplicated code in your test cases, particularly when checking the expected and actual contents of arrays. Write a function called `compare_arrays()` that takes in two arrays and their lengths and checks that the contents of those arrays are equal using the framework's special assertions. Then, refactor your test cases to use `compare_arrays()` instead of duplicating code.
 
 **Note**: Since `compare_arrays()` is a test helper, it should be within `lab02_tests.cpp`!
 
