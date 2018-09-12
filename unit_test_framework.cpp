@@ -84,7 +84,20 @@ public:
     int status;
 };
 
+class SetComplete {
+public:
+    SetComplete(bool &incomplete_) : incomplete(incomplete_) {
+        incomplete = true;
+    }
+    ~SetComplete() {
+        incomplete = false;
+    }
+private:
+    bool &incomplete;
+};
+
 int TestSuite::run_tests(int argc, char** argv) {
+    SetComplete completer(incomplete);
     vector<string> test_names_to_run;
     try {
         test_names_to_run = get_test_names_to_run(argc, argv);

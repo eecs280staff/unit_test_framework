@@ -11,6 +11,7 @@
 #include <vector>
 #include <typeinfo>
 #include <type_traits>
+#include <cstdlib>
 
 // For compatibility with Visual Studio
 #include <ciso646>
@@ -77,7 +78,18 @@ public:
     friend class TestSuiteDestroyer;
 
 private:
-    TestSuite() {}
+    TestSuite() {
+        auto func = []() {
+            if (TestSuite::instance->incomplete) {
+                std::cout << "ERROR: premature call to exit()" << std::endl;
+                std::abort();
+            }
+        };
+        std::atexit(func);
+#ifdef _GLIBCXX_HAVE_AT_QUICK_EXIT
+        std::at_quick_exit(func);
+#endif
+    }
     TestSuite(const TestSuite&) = delete;
     bool operator=(const TestSuite&) = delete;
     ~TestSuite() {}
@@ -88,6 +100,7 @@ private:
     std::map<std::string, TestCase> tests_;
 
     bool quiet_mode = false;
+    bool incomplete = false;
 };
 
 class TestSuiteDestroyer {
