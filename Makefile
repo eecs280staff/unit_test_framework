@@ -5,7 +5,8 @@ CXXFLAGS = -Wall -Wextra -pedantic --std=c++11
 test_dir = test
 
 test_exes = $(test_dir)/test_special_asserts.exe \
-			$(test_dir)/end_to_end_test.exe
+			$(test_dir)/end_to_end_test.exe \
+			$(test_dir)/test_early_exit.exe
 
 end_to_end_corrects = $(wildcard $(test_dir)/*.correct.txt)
 end_to_end_targets = $(end_to_end_corrects:.correct.txt=.end_to_end)
@@ -14,6 +15,7 @@ all: $(test_exes)
 
 test: $(test_exes) $(test_dir)/end_to_end_test.exe
 	./$(test_dir)/test_special_asserts.exe
+	! ./$(test_dir)/test_early_exit.exe
 
 	$(CXX) $(CXXFLAGS) -I. \
 					   $(test_dir)/test_name_conflict_file_with_non_static_func.cpp \
