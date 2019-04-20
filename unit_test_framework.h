@@ -138,11 +138,46 @@ std::ostream& operator<<(std::ostream& os, const TestFailure& test_failure);
 // Demangles a string produced by std::type_info::name.
 std::string demangle(const char* typeinfo_name);
 
+// forward declaration of print
+template <class T>
+std::ostream& print(std::ostream& os, const T& t);
+
 // This version of print_helper will be called when T has an available
 // stream insertion operator overload.
 template <class T>
-auto print_helper(std::ostream& os, const T& t, int) -> decltype(os << t)& {
+auto print_helper(std::ostream& os, const T& t, int, int)
+    -> decltype(os << t)& {
     return os << t;
+}
+
+// This version of print_helper will be called when T is a pair.
+template <class First, class Second>
+auto print_helper(std::ostream& os,
+                  const std::pair<First, Second>& t, int, int)
+  -> decltype(print(os, t.first), print(os, t.second))& {
+    os << '(';
+    print(os, t.first);
+    os << ',';
+    print(os, t.second);
+    return os << ')';
+}
+
+// This version of print_helper will be called when T is a sequence.
+template <class Sequence>
+auto print_helper(std::ostream& os, const Sequence& seq, int, ...)
+  -> decltype(print(os, *seq.begin()), print(os, *seq.end()))& {
+    if (seq.begin() == seq.end()) {
+      return os << "{}";
+    }
+
+    auto it = seq.begin();
+    os << "{ ";
+    print(os, *it);
+    for (++it; it != seq.end(); ++it) {
+      os << ", ";
+      print(os, *it);
+    }
+    return os << " }";
 }
 
 // This version of print_helper will be called when T does not have an
@@ -158,9 +193,9 @@ std::ostream& print_helper(std::ostream& os, const T&, ...) {
 // is printed to os.
 template <class T>
 std::ostream& print(std::ostream& os, const T& t) {
-    // The 3rd parameter is needed so that the first overload of
-    // print_helper is preferred.
-    return print_helper(os, t, 0);
+    // The extra parameters are needed so that the first overload of
+    // print_helper is preferred, followed by the third one.
+    return print_helper(os, t, 0, 0);
 }
 
 // ----------------------------------------------------------------------------

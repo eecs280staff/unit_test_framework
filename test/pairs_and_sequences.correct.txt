@@ -1,0 +1,23 @@
+Running test: map_print
+FAIL
+Running test: pair_print
+FAIL
+Running test: vector_print
+FAIL
+
+*** Results ***
+** Test case "map_print": FAIL
+In test , line 28: 
+{ (hello,3), (world,-1) } != { (hello,4), (world,-1) }
+
+** Test case "pair_print": FAIL
+In test , line 18: 
+(hello,3) != (hello,4)
+
+** Test case "vector_print": FAIL
+In test , line 12: 
+{} != { 3, 4 }
+
+*** Summary ***
+Out of 3 tests run:
+3 failure(s), 0 error(s)
