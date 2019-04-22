@@ -10,6 +10,7 @@
 #include <memory>
 #include <vector>
 #include <typeinfo>
+#include <type_traits>
 
 // For compatibility with Visual Studio
 #include <ciso646>
@@ -223,9 +224,49 @@ void assert_almost_equal(double first, double second, double precision,
 #define ASSERT_ALMOST_EQUAL(first, second, precision)                         \
     assert_almost_equal((first), (second), (precision), __LINE__);
 
+// Template logic to produce a static assertion failure when comparing
+// incomparable types.
+template <typename First, typename Second, typename=void>
+struct is_equality_comparable : std::false_type {};
+
+template <typename First, typename Second>
+using enable_if_equality_comparable =
+    typename std::enable_if<std::is_same<bool,
+        decltype(std::declval<First>() ==
+                 std::declval<Second>())>::value, void>::type;
+
+template <typename First, typename Second>
+struct is_equality_comparable<First, Second,
+                              enable_if_equality_comparable<First, Second>>
+    : std::true_type {};
+
+template <typename First, typename Second, typename=void>
+struct safe_equals {
+    static_assert(is_equality_comparable<First, Second>::value,
+                  "types cannot be compared with ==");
+    static bool equals(First first, Second second) {
+        return first == second;
+    }
+};
+
+// Specializations to allow size_t to be compared to int.
+template <>
+struct safe_equals<std::size_t, int> {
+    static bool equals(std::size_t first, int second) {
+        return static_cast<long long>(first) == second;
+    }
+};
+
+template <>
+struct safe_equals<int, std::size_t> {
+    static bool equals(int first, std::size_t second) {
+        return first == static_cast<long long>(second);
+    }
+};
+
 template <typename First, typename Second>
 void assert_equal(First first, Second second, int line_number) {
-    if (first == second) {
+    if (safe_equals<First, Second>::equals(first, second)) {
         return;
     }
     std::ostringstream reason;
@@ -237,7 +278,7 @@ void assert_equal(First first, Second second, int line_number) {
 
 template <typename First, typename Second>
 void assert_not_equal(First first, Second second, int line_number) {
-    if (first != second) {
+    if (!safe_equals<First, Second>::equals(first, second)) {
         return;
     }
     std::ostringstream reason;
