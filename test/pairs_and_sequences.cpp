@@ -28,4 +28,20 @@ TEST(map_print) {
     ASSERT_EQUAL(m1, m2);
 }
 
+TEST(nested_vector_print) {
+  vector<vector<double>> vs1 = { { 1.1, 2.3 }, { -4.6 } };
+  vector<vector<double>> vs2 = { { 1.1, 2.3 }, { -4.6, 8.7 } };
+  ASSERT_EQUAL(vs1, vs2);
+}
+
+TEST(nested_pair_print) {
+  map<pair<string, string>, int> m1;
+  map<pair<string, string>, int> m2;
+  m1[{ "hello", "world" }] = 3;
+  m1[{ "foo", "bar" }] = -1;
+  m2[{ "hello", "world" }] = 3;
+  m2[{ "bar", "foo" }] = -1;
+  ASSERT_EQUAL(m1, m2);
+}
+
 TEST_MAIN()
