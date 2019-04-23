@@ -215,9 +215,9 @@ std::ostream& print(std::ostream& os, const T& t) {
 // ----------------------------------------------------------------------------
 
 template <typename First, typename Second>
-void assert_equal(First first, Second second, int line_number);
+void assert_equal(First &&first, Second &&second, int line_number);
 template <typename First, typename Second>
-void assert_not_equal(First first, Second second, int line_number);
+void assert_not_equal(First &&first, Second &&second, int line_number);
 
 void assert_true(bool value, int line_number);
 void assert_false(bool value, int line_number);
@@ -246,7 +246,10 @@ template <typename First, typename Second>
 using enable_if_equality_comparable =
     typename std::enable_if<std::is_same<bool,
         decltype(std::declval<First>() ==
-                 std::declval<Second>())>::value, void>::type;
+                 std::declval<Second>())>::value &&
+        !std::is_array<typename std::remove_reference<First>::type>::value &&
+        !std::is_array<typename std::remove_reference<Second>::type>::value,
+                            void>::type;
 
 template <typename First, typename Second>
 struct is_equality_comparable<First, Second,
@@ -257,7 +260,7 @@ template <typename First, typename Second, typename=void>
 struct safe_equals {
     static_assert(is_equality_comparable<First, Second>::value,
                   "types cannot be compared with ==");
-    static bool equals(First first, Second second) {
+    static bool equals(const First &first, const Second &second) {
         return first == second;
     }
 };
@@ -278,7 +281,7 @@ struct safe_equals<int, std::size_t> {
 };
 
 template <typename First, typename Second>
-void assert_equal(First first, Second second, int line_number) {
+void assert_equal(First &&first, Second &&second, int line_number) {
     if (safe_equals<First, Second>::equals(first, second)) {
         return;
     }
@@ -290,7 +293,7 @@ void assert_equal(First first, Second second, int line_number) {
 }
 
 template <typename First, typename Second>
-void assert_not_equal(First first, Second second, int line_number) {
+void assert_not_equal(First &&first, Second &&second, int line_number) {
     if (!safe_equals<First, Second>::equals(first, second)) {
         return;
     }
