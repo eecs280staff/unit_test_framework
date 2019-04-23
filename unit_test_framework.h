@@ -12,6 +12,7 @@
 #include <typeinfo>
 #include <type_traits>
 #include <cstdlib>
+#include <iterator>
 
 // For compatibility with Visual Studio
 #include <ciso646>
@@ -193,6 +194,23 @@ auto print_helper(std::ostream& os, const Sequence& seq, int, ...)
     return os << " }";
 }
 
+// This version of print_helper will be called when T is an array.
+template <class Elem, std::size_t N>
+std::ostream& print_helper(std::ostream& os, const Elem (&arr)[N], int, int) {
+    if (N == 0) {
+      return os << "{}";
+    }
+
+    auto it = std::begin(arr);
+    os << "{ ";
+    print(os, *it);
+    for (++it; it != std::end(arr); ++it) {
+      os << ", ";
+      print(os, *it);
+    }
+    return os << " }";
+}
+
 // This version of print_helper will be called when T does not have an
 // available stream insertion operator overload.
 template <class T>
@@ -228,6 +246,9 @@ void assert_almost_equal(double first, double second, double precision,
 
 #define ASSERT_NOT_EQUAL(first, second)                                       \
     assert_not_equal((first), (second), __LINE__);
+
+#define ASSERT_SEQUENCE_EQUAL(first, second)                                  \
+    assert_sequence_equal((first), (second), __LINE__);
 
 #define ASSERT_TRUE(value) assert_true((value), __LINE__);
 
@@ -292,7 +313,7 @@ void assert_equal(First&& first, Second&& second, int line_number) {
 
 template <typename First, typename Second>
 void assert_not_equal(First&& first, Second&& second, int line_number) {
-    if (!safe_equals<First, Second>::equals(first, second)) {
+    if (not safe_equals<First, Second>::equals(first, second)) {
         return;
     }
     std::ostringstream reason;
@@ -304,5 +325,29 @@ void assert_not_equal(First&& first, Second&& second, int line_number) {
     throw TestFailure(reason.str(), line_number);
 }
 
+template <typename First, typename Second>
+void assert_sequence_equal(First &&first, Second &&second, int line_number) {
+    auto it1 = std::begin(first);
+    auto it2 = std::begin(second);
+    auto end1 = std::end(first);
+    auto end2 = std::end(second);
+    bool equal = true;
+    for (; it1 != end1 and it2 != end2; ++it1, ++it2) {
+        if (not safe_equals<decltype(*it1),
+                            decltype(*it2)>::equals(*it1, *it2)) {
+            equal = false;
+            break;
+        }
+    }
+
+    if (not equal or
+        it1 != end1 or it2 != end2) { // different number of elements
+        std::ostringstream reason;
+        print(reason, first);
+        reason << " != ";
+        print(reason, second);
+        throw TestFailure(reason.str(), line_number);
+    }
+}
 
 #endif
