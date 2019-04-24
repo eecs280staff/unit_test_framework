@@ -40,7 +40,7 @@ using Test_func_t = void (*)();
 
 
 struct TestCase {
-    TestCase(const std::string &name_, Test_func_t test_func_)
+    TestCase(const std::string& name_, Test_func_t test_func_)
         : name(name_), test_func(test_func_) {}
 
     void run(bool quiet_mode);
@@ -434,14 +434,15 @@ public:
 
 class SetComplete {
 public:
-    SetComplete(bool &incomplete_) : incomplete(incomplete_) {
+    SetComplete(bool& incomplete_) : incomplete(incomplete_) {
         incomplete = true;
     }
     ~SetComplete() {
         incomplete = false;
     }
+
 private:
-    bool &incomplete;
+    bool& incomplete;
 };
 
 int TestSuite::run_tests(int argc, char** argv) {
@@ -469,21 +470,21 @@ int TestSuite::run_tests(int argc, char** argv) {
         tests_.at(test_name).print(quiet_mode);
     }
 
-    auto num_failures = std::count_if(
-        tests_.begin(), tests_.end(),
-        [](std::pair<std::string, TestCase> test_pair) {
-            return not test_pair.second.failure_msg.empty();
-        });
-    auto num_errors = std::count_if(
-        tests_.begin(), tests_.end(),
-        [](std::pair<std::string, TestCase> test_pair) {
-            return not test_pair.second.exception_msg.empty();
-        });
+    auto num_failures =
+        std::count_if(tests_.begin(), tests_.end(),
+                      [](std::pair<std::string, TestCase> test_pair) {
+                          return not test_pair.second.failure_msg.empty();
+                      });
+    auto num_errors =
+        std::count_if(tests_.begin(), tests_.end(),
+                      [](std::pair<std::string, TestCase> test_pair) {
+                          return not test_pair.second.exception_msg.empty();
+                      });
 
     if (not quiet_mode) {
         std::cout << "*** Summary ***" << std::endl;
-        std::cout << "Out of " << test_names_to_run.size() << " tests run:"
-                  << std::endl;
+        std::cout << "Out of " << test_names_to_run.size()
+                  << " tests run:" << std::endl;
         std::cout << num_failures << " failure(s), " << num_errors
                   << " error(s)" << std::endl;
     }
@@ -512,7 +513,7 @@ std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
         else if (argv[i] == std::string("--help") or
                  argv[i] == std::string("-h")) {
             std::cout << "usage: " << argv[0]
-                 << " [-h] [-n] [-q] [[TEST_NAME] ...]\n";
+                      << " [-h] [-n] [-q] [[TEST_NAME] ...]\n";
             std::cout
                 << "optional arguments:\n"
                 << " -h, --help\t\t show this help message and exit\n"
@@ -533,10 +534,9 @@ std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
     }
 
     if (test_names_to_run.empty()) {
-        transform(begin(tests_), end(tests_), back_inserter(test_names_to_run),
-                  [](const std::pair<std::string, TestCase>& p) {
-                      return p.first;
-                  });
+        transform(
+            begin(tests_), end(tests_), back_inserter(test_names_to_run),
+            [](const std::pair<std::string, TestCase>& p) { return p.first; });
     }
     return test_names_to_run;
 }
@@ -603,4 +603,4 @@ void assert_almost_equal(double first, double second, double precision,
     throw TestFailure(reason.str(), line_number);
 }
 
-#endif // UNIT_TEST_FRAMEWORK_H
+#endif  // UNIT_TEST_FRAMEWORK_H
