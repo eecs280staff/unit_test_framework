@@ -166,9 +166,8 @@ auto print_helper(std::ostream& os, const T& t, int, int)
 
 // This version of print_helper will be called when T is a pair.
 template <class First, class Second>
-auto print_helper(std::ostream& os,
-                  const std::pair<First, Second>& t, int, int)
-  -> decltype(print(os, t.first), print(os, t.second))& {
+auto print_helper(std::ostream& os, const std::pair<First, Second>& t, int,
+                  int) -> decltype(print(os, t.first), print(os, t.second))& {
     os << '(';
     print(os, t.first);
     os << ',';
@@ -179,17 +178,17 @@ auto print_helper(std::ostream& os,
 // This version of print_helper will be called when T is a sequence.
 template <class Sequence>
 auto print_helper(std::ostream& os, const Sequence& seq, int, ...)
-  -> decltype(print(os, *seq.begin()), print(os, *seq.end()))& {
+    -> decltype(print(os, *seq.begin()), print(os, *seq.end()))& {
     if (seq.begin() == seq.end()) {
-      return os << "{}";
+        return os << "{}";
     }
 
     auto it = seq.begin();
     os << "{ ";
     print(os, *it);
     for (++it; it != seq.end(); ++it) {
-      os << ", ";
-      print(os, *it);
+        os << ", ";
+        print(os, *it);
     }
     return os << " }";
 }
@@ -215,9 +214,9 @@ std::ostream& print(std::ostream& os, const T& t) {
 // ----------------------------------------------------------------------------
 
 template <typename First, typename Second>
-void assert_equal(First first, Second second, int line_number);
+void assert_equal(First&& first, Second&& second, int line_number);
 template <typename First, typename Second>
-void assert_not_equal(First first, Second second, int line_number);
+void assert_not_equal(First&& first, Second&& second, int line_number);
 
 void assert_true(bool value, int line_number);
 void assert_false(bool value, int line_number);
@@ -239,25 +238,27 @@ void assert_almost_equal(double first, double second, double precision,
 
 // Template logic to produce a static assertion failure when comparing
 // incomparable types.
-template <typename First, typename Second, typename=void>
+template <typename First, typename Second, typename = void>
 struct is_equality_comparable : std::false_type {};
 
 template <typename First, typename Second>
-using enable_if_equality_comparable =
-    typename std::enable_if<std::is_same<bool,
-        decltype(std::declval<First>() ==
-                 std::declval<Second>())>::value, void>::type;
+using enable_if_equality_comparable = typename std::enable_if<
+    std::is_same<bool, decltype(std::declval<First>() ==
+                                std::declval<Second>())>::value &&
+        !std::is_array<typename std::remove_reference<First>::type>::value &&
+        !std::is_array<typename std::remove_reference<Second>::type>::value,
+    void>::type;
 
 template <typename First, typename Second>
 struct is_equality_comparable<First, Second,
                               enable_if_equality_comparable<First, Second>>
     : std::true_type {};
 
-template <typename First, typename Second, typename=void>
+template <typename First, typename Second, typename = void>
 struct safe_equals {
     static_assert(is_equality_comparable<First, Second>::value,
                   "types cannot be compared with ==");
-    static bool equals(First first, Second second) {
+    static bool equals(const First& first, const Second& second) {
         return first == second;
     }
 };
@@ -278,7 +279,7 @@ struct safe_equals<int, std::size_t> {
 };
 
 template <typename First, typename Second>
-void assert_equal(First first, Second second, int line_number) {
+void assert_equal(First&& first, Second&& second, int line_number) {
     if (safe_equals<First, Second>::equals(first, second)) {
         return;
     }
@@ -290,7 +291,7 @@ void assert_equal(First first, Second second, int line_number) {
 }
 
 template <typename First, typename Second>
-void assert_not_equal(First first, Second second, int line_number) {
+void assert_not_equal(First&& first, Second&& second, int line_number) {
     if (!safe_equals<First, Second>::equals(first, second)) {
         return;
     }
