@@ -21,7 +21,6 @@ test: $(test_exes) $(test_dir)/end_to_end_test.exe
 	$(CXX) $(CXXFLAGS) -I. \
 					   $(test_dir)/test_name_conflict_file_with_non_static_func.cpp \
 					   $(test_dir)/test_name_conflict_file_with_tests.cpp \
-					   unit_test_framework.cpp \
 					   -o no_conflict.exe
 
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe,end_to_end_test)
@@ -37,8 +36,8 @@ test: $(test_exes) $(test_dir)/end_to_end_test.exe
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< -c -o $@
 
-$(test_dir)/%.exe: $(test_dir)/%.o unit_test_framework.o
-	$(CXX) $(CXXFLAGS) $< unit_test_framework.o -o $@
+$(test_dir)/%.exe: $(test_dir)/%.o
+	$(CXX) $(CXXFLAGS) $< -o $@
 
 # Params:
 # 1. executable plus args

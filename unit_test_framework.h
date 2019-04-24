@@ -13,6 +13,9 @@
 #include <type_traits>
 #include <cstdlib>
 #include <iterator>
+#include <algorithm>
+#include <exception>
+#include <stdexcept>
 
 // For compatibility with Visual Studio
 #include <ciso646>
@@ -32,11 +35,12 @@ using Test_func_t = void (*)();
 #define TEST_MAIN()                                                           \
     int main(int argc, char** argv) {                                         \
         return TestSuite::get().run_tests(argc, argv);                        \
-    }
+    }                                                                         \
+    TEST_SUITE_INSTANCE();
 
 
 struct TestCase {
-    TestCase(std::string name_, Test_func_t test_func_)
+    TestCase(const std::string& name_, Test_func_t test_func_)
         : name(name_), test_func(test_func_) {}
 
     void run(bool quiet_mode);
@@ -352,4 +356,251 @@ void assert_sequence_equal(First&& first, Second&& second, int line_number) {
     }
 }
 
-#endif
+//------------------------------------------------------------------------------
+
+// THIS IS PART OF A WORKAROUND TO DEAL WITH STATIC
+// INITIALIZATION SHENANIGANS.
+// DO NOT CHANGE THIS UNLESS YOU REEEEALLY KNOW WHAT
+// YOU'RE DOING. CONTACT akamil@umich.edu or jameslp@umich.edu IF
+// YOU HAVE QUESTIONS ABOUT THIS.
+#define TEST_SUITE_INSTANCE()                                                 \
+    static TestSuiteDestroyer destroyer;                                      \
+    TestSuite* TestSuite::instance = &TestSuite::get()
+
+void TestCase::run(bool quiet_mode) {
+    try {
+        if (not quiet_mode) {
+            std::cout << "Running test: " << name << std::endl;
+        }
+
+        test_func();
+
+        if (not quiet_mode) {
+            std::cout << "PASS" << std::endl;
+        }
+    }
+    catch (TestFailure& failure) {
+        failure_msg = failure.to_string();
+
+        if (not quiet_mode) {
+            std::cout << "FAIL" << std::endl;
+        }
+    }
+    catch (std::exception& e) {
+        std::ostringstream oss;
+        oss << "Uncaught " << demangle(typeid(e).name()) << " in test \""
+            << name << "\": \n";
+        oss << e.what() << '\n';
+        exception_msg = oss.str();
+
+        if (not quiet_mode) {
+            std::cout << "ERROR" << std::endl;
+        }
+    }
+}
+
+void TestCase::print(bool quiet_mode) {
+    if (quiet_mode) {
+        std::cout << name << ": ";
+    }
+    else {
+        std::cout << "** Test case \"" << name << "\": ";
+    }
+
+    if (not failure_msg.empty()) {
+        std::cout << "FAIL" << std::endl;
+        if (not quiet_mode) {
+            std::cout << failure_msg << std::endl;
+        }
+    }
+    else if (not exception_msg.empty()) {
+        std::cout << "ERROR" << std::endl;
+        if (not quiet_mode) {
+            std::cout << exception_msg << std::endl;
+        }
+    }
+    else {
+        std::cout << "PASS" << std::endl;
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+class ExitSuite : public std::exception {
+public:
+    ExitSuite(int status_ = 0) : status(status_) {}
+    int status;
+};
+
+class SetComplete {
+public:
+    SetComplete(bool& incomplete_) : incomplete(incomplete_) {
+        incomplete = true;
+    }
+    ~SetComplete() {
+        incomplete = false;
+    }
+
+private:
+    bool& incomplete;
+};
+
+int TestSuite::run_tests(int argc, char** argv) {
+    SetComplete completer(incomplete);
+    std::vector<std::string> test_names_to_run;
+    try {
+        test_names_to_run = get_test_names_to_run(argc, argv);
+    }
+    catch (ExitSuite& e) {
+        return e.status;
+    }
+
+    for (auto test_name : test_names_to_run) {
+        if (tests_.find(test_name) == end(tests_)) {
+            throw std::runtime_error("Test " + test_name + " not found");
+        }
+    }
+
+    for (auto test_name : test_names_to_run) {
+        tests_.at(test_name).run(quiet_mode);
+    }
+
+    std::cout << "\n*** Results ***" << std::endl;
+    for (auto test_name : test_names_to_run) {
+        tests_.at(test_name).print(quiet_mode);
+    }
+
+    auto num_failures =
+        std::count_if(tests_.begin(), tests_.end(),
+                      [](std::pair<std::string, TestCase> test_pair) {
+                          return not test_pair.second.failure_msg.empty();
+                      });
+    auto num_errors =
+        std::count_if(tests_.begin(), tests_.end(),
+                      [](std::pair<std::string, TestCase> test_pair) {
+                          return not test_pair.second.exception_msg.empty();
+                      });
+
+    if (not quiet_mode) {
+        std::cout << "*** Summary ***" << std::endl;
+        std::cout << "Out of " << test_names_to_run.size()
+                  << " tests run:" << std::endl;
+        std::cout << num_failures << " failure(s), " << num_errors
+                  << " error(s)" << std::endl;
+    }
+
+    if (num_failures == 0 and num_errors == 0) {
+        return 0;
+    }
+    return 1;
+}
+
+std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
+                                                          char** argv) {
+    std::vector<std::string> test_names_to_run;
+    for (auto i = 1; i < argc; ++i) {
+        if (argv[i] == std::string("--show_test_names") or
+            argv[i] == std::string("-n")) {
+
+            TestSuite::get().print_test_names(std::cout);
+            std::cout << std::flush;
+            throw ExitSuite();
+        }
+        else if (argv[i] == std::string("--quiet") or
+                 argv[i] == std::string("-q")) {
+            TestSuite::get().enable_quiet_mode();
+        }
+        else if (argv[i] == std::string("--help") or
+                 argv[i] == std::string("-h")) {
+            std::cout << "usage: " << argv[0]
+                      << " [-h] [-n] [-q] [[TEST_NAME] ...]\n";
+            std::cout
+                << "optional arguments:\n"
+                << " -h, --help\t\t show this help message and exit\n"
+                << " -n, --show_test_names\t print the names of all "
+                   "discovered test cases and exit\n"
+                << " -q, --quiet\t\t print a reduced summary of test results\n"
+                << " TEST_NAME ...\t\t run only the test cases whose names "
+                   "are "
+                   "listed here. Note: If no test names are specified, all "
+                   "discovered tests are run by default."
+                << std::endl;
+
+            throw ExitSuite();
+        }
+        else {
+            test_names_to_run.push_back(argv[i]);
+        }
+    }
+
+    if (test_names_to_run.empty()) {
+        transform(
+            begin(tests_), end(tests_), back_inserter(test_names_to_run),
+            [](const std::pair<std::string, TestCase>& p) { return p.first; });
+    }
+    return test_names_to_run;
+}
+
+std::ostream& operator<<(std::ostream& os, const TestFailure& test_failure) {
+    return test_failure.print(os);
+}
+
+//------------------------------------------------------------------------------
+
+#if defined(__clang__) || defined(__GLIBCXX__) || defined(__GLIBCPP__)
+#include <cxxabi.h>
+#include <cstdlib>
+std::string demangle(const char* typeinfo_name) {
+    int status = 0;
+    char* demangled =
+        abi::__cxa_demangle(typeinfo_name, nullptr, nullptr, &status);
+    if (status == 0) {
+        std::string result = demangled;
+        std::free(demangled);
+        return result;
+    }
+    else {
+        return typeinfo_name;
+    }
+}
+#else
+std::string demangle(const char* typeinfo_name) {
+    return typeinfo_name;
+}
+#endif  // defined(__clang__) || defined(__GLIBCXX__) || defined(__GLIBCPP__)
+
+//------------------------------------------------------------------------------
+
+void assert_true(bool value, int line_number) {
+    if (value) {
+        return;
+    }
+    std::ostringstream reason;
+    reason << "Expected true, but was false";
+    throw TestFailure(reason.str(), line_number);
+}
+
+void assert_false(bool value, int line_number) {
+    if (not value) {
+        return;
+    }
+    std::ostringstream reason;
+    reason << "Expected false, but was true";
+    throw TestFailure(reason.str(), line_number);
+}
+
+void assert_almost_equal(double first, double second, double precision,
+                         int line_number) {
+    if (std::abs(first - second) <= precision) {
+        return;
+    }
+    std::ostringstream reason;
+    // For now, we'll just set the precision arbitrarily high.
+    // In the future, we may decide to add an option to configure
+    // the output precision.
+    reason.precision(20);
+    reason << "Values too far apart: " << first << " and " << second;
+    throw TestFailure(reason.str(), line_number);
+}
+
+#endif  // UNIT_TEST_FRAMEWORK_H
