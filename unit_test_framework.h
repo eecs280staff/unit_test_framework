@@ -327,10 +327,12 @@ void assert_not_equal(First&& first, Second&& second, int line_number) {
 
 template <typename First, typename Second>
 void assert_sequence_equal(First&& first, Second&& second, int line_number) {
-    auto it1 = std::begin(first);
-    auto it2 = std::begin(second);
-    auto end1 = std::end(first);
-    auto end2 = std::end(second);
+    using std::begin;
+    using std::end;
+    auto it1 = begin(first);
+    auto it2 = begin(second);
+    auto end1 = end(first);
+    auto end2 = end(second);
     bool equal = true;
     for (; it1 != end1 and it2 != end2; ++it1, ++it2) {
         if (not safe_equals<decltype(*it1), decltype(*it2)>::equals(
