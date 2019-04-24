@@ -1,0 +1,23 @@
+Running test: array_equal
+PASS
+Running test: array_unequal
+FAIL
+Running test: array_vector_equal
+PASS
+Running test: array_vector_unequal
+FAIL
+
+*** Results ***
+** Test case "array_equal": PASS
+** Test case "array_unequal": FAIL
+In test , line 20: 
+{ 1, 2 } != { 1, 3 }
+
+** Test case "array_vector_equal": PASS
+** Test case "array_vector_unequal": FAIL
+In test , line 26: 
+{ 1, 2 } != { 1, 2, -2.1 }
+
+*** Summary ***
+Out of 4 tests run:
+2 failure(s), 0 error(s)

@@ -6,7 +6,8 @@ test_dir = test
 
 test_exes = $(test_dir)/test_special_asserts.exe \
 			$(test_dir)/end_to_end_test.exe \
-			$(test_dir)/test_early_exit.exe
+			$(test_dir)/test_early_exit.exe \
+			$(test_dir)/sequence_equal.exe
 
 end_to_end_corrects = $(wildcard $(test_dir)/*.correct.txt)
 end_to_end_targets = $(end_to_end_corrects:.correct.txt=.end_to_end)
@@ -31,6 +32,7 @@ test: $(test_exes) $(test_dir)/end_to_end_test.exe
 
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe should_pass,run_subset_of_tests_test)
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe should_pass -q should_fail,quiet_run_subset_of_tests)
+	$(call run_and_diff,$(test_dir)/sequence_equal.exe,sequence_equal)
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< -c -o $@

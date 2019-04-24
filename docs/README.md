@@ -98,6 +98,7 @@ Assertion | Description
 <code>ASSERT_TRUE(<i>bool value</i>)</code> | If `value` is false, the test will fail.
 <code>ASSERT_FALSE(<i>bool value</i>)</code> | If `value` is true, the test will fail.
 <code>ASSERT_ALMOST_EQUAL(<i>double first</i>, <i>double second</i>, <i>double precision</i>)</code> | If `first` and `second` are not equal within `precision`, the test will fail.
+<code>ASSERT_SEQUENCE_EQUAL(<i>first</i>, <i>second</i>)</code> | `first` and `second` must be sequences (e.g. arrays, vectors, lists). If `first` and `second` do not have equal elements, the test will fail.
 
 # Example: Tests for an `add()` function
 
@@ -221,6 +222,11 @@ discard any tests that are not valid when checked against a correct solution.
 You may have noticed some duplicated code in your test cases, particularly when checking the expected and actual contents of arrays. Write a function called `compare_arrays()` that takes in two arrays and their lengths and checks that the contents of those arrays are equal using the framework's special assertions. Then, refactor your test cases to use `compare_arrays()` instead of duplicating code.
 
 **Note**: Since `compare_arrays()` is a test helper, it should be within `lab02_tests.cpp`!
+
+**Note**: `compare_arrays()` is different from
+`ASSERT_SEQUENCE_EQUAL()`. The latter works on arrays, but not on
+pointers that decayed from arrays. You will not be able to use
+`ASSERT_SEQUENCE_EQUAL()` in `compare_arrays()`.
 
 # Extra: Convert your Project 1 Tests to use the Framework
 
