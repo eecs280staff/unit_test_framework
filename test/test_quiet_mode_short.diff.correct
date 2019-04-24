@@ -1,0 +1,7 @@
+
+*** Results ***
+assert_almost_equal_precision_infinite: FAIL
+assert_almost_equal_precision_round: FAIL
+should_fail: FAIL
+should_pass: PASS
+throws_error: ERROR
