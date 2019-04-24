@@ -66,6 +66,9 @@ int main() {
 }
 
 
+TEST_SUITE_INSTANCE();
+
+
 void test_assert_equal() {
     cout << "test_assert_equal" << endl;
     int i = 42;
