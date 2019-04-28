@@ -270,8 +270,8 @@ template <typename First, typename Second>
 using enable_if_equality_comparable = typename std::enable_if<
     std::is_same<bool, decltype(std::declval<First>() ==
                                 std::declval<Second>())>::value &&
-        !std::is_array<typename std::remove_reference<First>::type>::value &&
-        !std::is_array<typename std::remove_reference<Second>::type>::value,
+        (!std::is_array<typename std::remove_reference<First>::type>::value or
+         !std::is_array<typename std::remove_reference<Second>::type>::value),
     void>::type;
 
 template <typename First, typename Second>
