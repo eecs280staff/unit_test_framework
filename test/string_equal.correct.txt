@@ -1,0 +1,8 @@
+Running test: string_equal
+PASS
+
+*** Results ***
+** Test case "string_equal": PASS
+*** Summary ***
+Out of 1 tests run:
+0 failure(s), 0 error(s)
