@@ -1,5 +1,9 @@
-# Simple C++ Unit Testing
-A lightweight, easy to use, C++ unit testing framework suitable.  It consists of a single `.h`/`.cpp` compilation unit, written in C++11.
+Unit Test Framework
+===================
+
+[![`master` Build Status](https://travis-ci.com/eecs280staff/unit_test_framework.svg?branch=master)](https://travis-ci.com/eecs280staff/unit_test_framework)
+
+A lightweight, easy to use, C++11 unit testing framework implemented in a single `.h` file.
 
 Publicly available tutorial: [https://eecs280staff.github.io/unit_test_framework/](https://eecs280staff.github.io/unit_test_framework/)
 
