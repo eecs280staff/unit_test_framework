@@ -269,7 +269,9 @@ struct is_equality_comparable : std::false_type {};
 template <typename First, typename Second>
 using enable_if_equality_comparable = typename std::enable_if<
     std::is_same<bool, decltype(std::declval<First>() ==
-                                std::declval<Second>())>::value &&
+                                std::declval<Second>())>::value and
+        std::is_same<bool, decltype(std::declval<First>() !=
+                                    std::declval<Second>())>::value and
         (!std::is_array<typename std::remove_reference<First>::type>::value or
          !std::is_array<typename std::remove_reference<Second>::type>::value),
     void>::type;
@@ -282,9 +284,12 @@ struct is_equality_comparable<First, Second,
 template <typename First, typename Second, typename = void>
 struct safe_equals {
     static_assert(is_equality_comparable<First, Second>::value,
-                  "types cannot be compared with ==");
+                  "types cannot be compared with == and !=");
     static bool equals(const First& first, const Second& second) {
         return first == second;
+    }
+    static bool not_equals(const First& first, const Second& second) {
+        return first != second;
     }
 };
 
@@ -317,7 +322,7 @@ void assert_equal(First&& first, Second&& second, int line_number) {
 
 template <typename First, typename Second>
 void assert_not_equal(First&& first, Second&& second, int line_number) {
-    if (not safe_equals<First, Second>::equals(first, second)) {
+    if (safe_equals<First, Second>::not_equals(first, second)) {
         return;
     }
     std::ostringstream reason;
