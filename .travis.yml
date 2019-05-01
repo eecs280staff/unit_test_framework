@@ -80,39 +80,5 @@ matrix:
       osx_image: xcode10.1
       compiler: clang
 
-    - name: "Ubuntu 16.04 Style Checks"
-      os: linux
-      dist: xenial
-      addons:
-        apt:
-          packages:
-            - cppcheck
-      before_install:
-        - mkdir ${HOME}/opt
-        - pushd ${HOME}/opt
-        - curl -OL https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.12.0/pmd-bin-6.12.0.zip
-        - unzip -q pmd-bin-6.12.0.zip
-        - pushd pmd-bin-6.12.0/bin
-        - ln run.sh pmd  # MUST be a hard link!!!
-        - popd
-        - curl -OL https://github.com/oclint/oclint/releases/download/v0.13/oclint-0.13-x86_64-linux-3.13.0-125-generic.tar.gz
-        - tar -xf oclint-0.13-x86_64-linux-3.13.0-125-generic.tar.gz
-        - popd
-      env:
-        - PATH="$PATH:${HOME}/opt/pmd-bin-6.12.0/bin"
-        - PATH="$PATH:${HOME}/opt/oclint-0.13/bin"
-      script:
-        - make style
-
-    - name: "macOS 10.13 Style Checks"
-      os: osx
-      osx_image: xcode10.1
-      before_install:
-        - export HOMEBREW_NO_AUTO_UPDATE=1
-        - brew install cppcheck pmd 
-        - brew cask install oclint
-      script:
-        - make style
-
 before_install:
     - eval "${MATRIX_EVAL}"
