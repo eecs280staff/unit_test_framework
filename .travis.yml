@@ -1,0 +1,118 @@
+# Travis CI Configuration for EECS 280
+#
+# Travis docs
+# https://docs.travis-ci.com/
+# https://docs.travis-ci.com/user/languages/cpp/
+#
+# Example with multiple compiler versions, including both GCC and Clang
+# https://github.com/facebook/fatal/blob/dev/.travis.yml
+#
+# OSX Xcode and Clang versions
+# https://trac.macports.org/wiki/XcodeVersionInfo
+
+
+# Functional test commands
+script:
+  - make test
+
+# Always test the master and develop branches, even when there's no PR
+branches:
+  only:
+    - master
+
+# Test against multiple compiler versions.  Test style twice, on Linux and OSX.
+language: cpp
+matrix:
+  include:
+
+    - name: "Ubuntu 14.04 Trusty GCC 4.8"
+      os: linux
+      dist: trusty
+      compiler: gcc
+
+    - name: "Ubuntu 14.04 Trusty Clang 3.5"
+      os: linux
+      dist: trusty
+      compiler: clang
+
+    - name: "Ubuntu 16.04 Xenial GCC 5.4"
+      os: linux
+      dist: xenial
+      compiler: gcc
+
+    - name: "Ubuntu 16.04 Xenial Clang 7"
+      os: linux
+      dist: xenial
+      compiler: clang
+
+    - name: "Ubuntu 16.04 Xenial GCC 6"
+      os: linux
+      dist: xenial
+      compiler: gcc
+      addons:
+        apt:
+          sources: ubuntu-toolchain-r-test
+          packages: g++-6
+      env: MATRIX_EVAL="CXX=g++-6"
+
+    - name: "Ubuntu 16.04 Xenial GCC 7"
+      os: linux
+      dist: xenial
+      compiler: gcc
+      addons:
+        apt:
+          sources: ubuntu-toolchain-r-test
+          packages: g++-7
+      env: MATRIX_EVAL="CXX=g++-7"
+
+    - name: "macOS 10.11 Apple LLVM version 8.0.0"
+      os: osx
+      osx_image: xcode8
+      compiler: clang
+
+    - name: "macOS 10.12 Apple LLVM version 9.0.0"
+      os: osx
+      osx_image: xcode9.2
+      compiler: clang
+
+    - name: "macOS 10.13 Apple LLVM version 10.0.0"
+      os: osx
+      osx_image: xcode10.1
+      compiler: clang
+
+    - name: "Ubuntu 16.04 Style Checks"
+      os: linux
+      dist: xenial
+      addons:
+        apt:
+          packages:
+            - cppcheck
+      before_install:
+        - mkdir ${HOME}/opt
+        - pushd ${HOME}/opt
+        - curl -OL https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.12.0/pmd-bin-6.12.0.zip
+        - unzip -q pmd-bin-6.12.0.zip
+        - pushd pmd-bin-6.12.0/bin
+        - ln run.sh pmd  # MUST be a hard link!!!
+        - popd
+        - curl -OL https://github.com/oclint/oclint/releases/download/v0.13/oclint-0.13-x86_64-linux-3.13.0-125-generic.tar.gz
+        - tar -xf oclint-0.13-x86_64-linux-3.13.0-125-generic.tar.gz
+        - popd
+      env:
+        - PATH="$PATH:${HOME}/opt/pmd-bin-6.12.0/bin"
+        - PATH="$PATH:${HOME}/opt/oclint-0.13/bin"
+      script:
+        - make style
+
+    - name: "macOS 10.13 Style Checks"
+      os: osx
+      osx_image: xcode10.1
+      before_install:
+        - export HOMEBREW_NO_AUTO_UPDATE=1
+        - brew install cppcheck pmd 
+        - brew cask install oclint
+      script:
+        - make style
+
+before_install:
+    - eval "${MATRIX_EVAL}"
