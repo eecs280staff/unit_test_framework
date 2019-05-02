@@ -17,10 +17,9 @@ In this tutorial, you will learn how to write test cases using a lightweight fra
 
 # Setting Up
 
-First, you will need the files `unit_test_framework.h` and `unit_test_framework.cpp`. These files are available with the starter files for Lab 2, but you can also download them with the following commands.
+First, you will need the file `unit_test_framework.h`. This file is available with the starter files for Lab 2, but you can also download it with the following command.
 
 ```console
-$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.cpp
 $ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.h
 ```
 
@@ -43,18 +42,18 @@ TEST(numbers_are_equal) {
 TEST_MAIN() // No semicolon!
 ```
 
-You’re probably wondering why some of the syntax in this code looks unusual. That’s because this testing framework uses preprocessor macros to achieve functionality that wouldn’t be possible with the plain C++ you’re used to seeing. Preprocessor macros are beyond the scope of this course and in general should be used sparingly, so here’s all you need to know:
+You're probably wondering why some of the syntax in this code looks unusual. That's because this testing framework uses preprocessor macros to achieve functionality that wouldn't be possible with the plain C++ you're used to seeing. Preprocessor macros are beyond the scope of this course and in general should be used sparingly, so here's all you need to know:
 
-  - The `TEST(<test_name>)` essentially gets replaced (by the preprocessor) with a test function called `<test_name>`, where `<test_name>` is any valid C++ function name and `<test_name>` will be the name of the new test function. You do **NOT** need to put quotes around `<test_name>`, and if you do you’ll get a compiler error.
+  - The `TEST(<test_name>)` essentially gets replaced (by the preprocessor) with a test function called `<test_name>`, where `<test_name>` is any valid C++ function name and `<test_name>` will be the name of the new test function. You do **NOT** need to put quotes around `<test_name>`, and if you do you'll get a compiler error.
 
   - `TEST_MAIN()` gets replaced by a `main()` function that detects and runs all of the test cases you defined using the `TEST()` macro. Unlike in Project 1 where you had to explicitly call your test functions from `main()`, this framework handles that for you!
 
-  - `ASSERT_TRUE()` is one of several special test assertion preprocessor macros that you can use to check conditions in your test cases. You’ll be using these instead of `assert()` in your unit tests. These will be demonstrated in more detail in the next section.
+  - `ASSERT_TRUE()` is one of several special test assertion preprocessor macros that you can use to check conditions in your test cases. You'll be using these instead of `assert()` in your unit tests. These will be demonstrated in more detail in the next section.
 
 Compile and run this test case with the following two commands:
 
 ```console
-$ g++ -Wall -Werror -pedantic -g -std=c++11 lab02.cpp lab02_tests.cpp unit_test_framework.cpp -o lab02_tests.exe
+$ g++ -Wall -Werror -pedantic -g -std=c++11 lab02.cpp lab02_tests.cpp -o lab02_tests.exe
 $ ./lab02_tests.exe
 Running test: numbers_are_equal
 PASS
@@ -83,11 +82,11 @@ Out of 1 tests run:
 0 failure(s), 0 error(s)
 ```
 
-You can pass any number of test names as command line arguments, and it will only run the ones you’ve specified.
+You can pass any number of test names as command line arguments, and it will only run the ones you've specified.
 
 # Special Test Assertions
 
-One of the main reasons for using the special assertions provided by the framework is that they allow the framework to run all of your tests and report which ones passed and which ones failed. As you may have noticed, when you use regular `assert()` in your test cases, they automatically stop at the first failure. This can make it difficult to debug errors in one test that are actually caused by a function whose test cases didn’t get a chance to run yet.
+One of the main reasons for using the special assertions provided by the framework is that they allow the framework to run all of your tests and report which ones passed and which ones failed. As you may have noticed, when you use regular `assert()` in your test cases, they automatically stop at the first failure. This can make it difficult to debug errors in one test that are actually caused by a function whose test cases didn't get a chance to run yet.
 
 Here is a summary of all the special assertions that the framework provides:
 
@@ -146,7 +145,7 @@ are equal to each other within a given range of precision. Since
 `double` values with the == operator.
 
 Let's rewrite the test case above using the unit test framework.
-First, let’s turn `add_test_basic` into a `TEST()` and replace `assert()` with `ASSERT_TRUE()`:
+First, let's turn `add_test_basic` into a `TEST()` and replace `assert()` with `ASSERT_TRUE()`:
 
 ```c++
 TEST(add_basic) {
@@ -163,7 +162,7 @@ TEST(add_basic) {
 }
 ```
 
-Next, instead of using our own `doubles_close()` function, let’s use `ASSERT_ALMOST_EQUAL()` from the framework:
+Next, instead of using our own `doubles_close()` function, let's use `ASSERT_ALMOST_EQUAL()` from the framework:
 
 ```c++
 TEST(add_basic) {
@@ -176,8 +175,8 @@ TEST(add_basic) {
 }
 ```
 
-`ASSERT_ALMOST_EQUAL()` and `ASSERT_EQUAL()` will print out the expected and actual values for us if they’re different.
-Finally, let’s add `TEST_MAIN()` and any `#include`s that we need:
+`ASSERT_ALMOST_EQUAL()` and `ASSERT_EQUAL()` will print out the expected and actual values for us if they're different.
+Finally, let's add `TEST_MAIN()` and any `#include`s that we need:
 
 ```c++
 #include “eecs280math.h”
@@ -202,7 +201,7 @@ Add test cases for `slideRight()` and `flip()` to `lab02_tests.cpp`.
 Compile and run the tests with the following commands:
 
 ```console
-$ g++ -Wall -Werror -pedantic -O1 -std=c++11 lab02.cpp lab02_tests.cpp unit_test_framework.cpp -o lab02_tests.exe
+$ g++ -Wall -Werror -pedantic -O1 -std=c++11 lab02.cpp lab02_tests.cpp -o lab02_tests.exe
 $ ./lab02_tests.exe
 ```
 
