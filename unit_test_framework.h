@@ -85,7 +85,7 @@ public:
 private:
     TestSuite() {
         auto func = []() {
-            if (TestSuite::instance->incomplete) {
+            if (TestSuite::incomplete) {
                 std::cout << "ERROR: premature call to exit()" << std::endl;
                 std::abort();
             }
@@ -105,7 +105,7 @@ private:
     std::map<std::string, TestCase> tests_;
 
     bool quiet_mode = false;
-    bool incomplete = false;
+    static bool incomplete;
 };
 
 class TestSuiteDestroyer {
@@ -370,6 +370,7 @@ void assert_sequence_equal(First&& first, Second&& second, int line_number) {
 // YOU HAVE QUESTIONS ABOUT THIS.
 #define TEST_SUITE_INSTANCE()                                                 \
     static TestSuiteDestroyer destroyer;                                      \
+    bool TestSuite::incomplete = false;                                       \
     TestSuite* TestSuite::instance = &TestSuite::get()
 
 void TestCase::run(bool quiet_mode) {
@@ -451,7 +452,7 @@ private:
 };
 
 int TestSuite::run_tests(int argc, char** argv) {
-    SetComplete completer(incomplete);
+    SetComplete completer(TestSuite::incomplete);
     std::vector<std::string> test_names_to_run;
     try {
         test_names_to_run = get_test_names_to_run(argc, argv);
