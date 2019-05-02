@@ -9,9 +9,8 @@ Publicly available tutorial: [https://eecs280staff.github.io/unit_test_framework
 
 
 ## Quickstart
-Install the unit test framework by copying `unit_test_framework.cpp` and `unit_test_framework.h` into your project.
+Install the unit test framework by copying `unit_test_framework.h` into your project.
 ```console
-$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.cpp
 $ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.h
 ```
 
@@ -22,7 +21,7 @@ $ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/my_tes
 
 Compile and run.
 ```console
-$ g++ --std=c++11 my_tests.cpp unit_test_framework.cpp -o my_tests.exe
+$ g++ --std=c++11 my_tests.cpp -o my_tests.exe
 $ ./my_tests.exe
 Running test: bool_is_true
 PASS
@@ -65,7 +64,7 @@ TEST_MAIN()
 
 
 ## How to write a test case: The `TEST()` macro
-Test cases can be declared using the special `TEST()` macro defined in `unit_test_framework.cpp`:
+Test cases can be declared using the special `TEST()` macro defined in `unit_test_framework.h`:
 ```c++
 TEST(<test_name>) {
     // test case code
@@ -97,6 +96,10 @@ You can use any amount of these special asserts in your test cases. You can also
 
 `ASSERT_ALMOST_EQUAL(double first, double second, double precision)`
 * If `first` and `second` are not equal within `precision`, the test will fail.
+
+`ASSERT_SEQUENCE_EQUAL(first, second)`
+* If `first` and `second` do not have equal elements, the test will fail.
+* `first` and `second` may be any sequence types (e.g. arrays, vectors, lists), as long as their elements are comparable with `==`.
 
 ## Command line options
 ```console
