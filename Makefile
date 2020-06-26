@@ -1,6 +1,6 @@
 CXX = g++
 CPPFLAGS = -MMD -MP -I.
-CXXFLAGS = -Wall -Wextra -pedantic --std=c++11
+CXXFLAGS = -Wall -Wextra -Werror -pedantic --std=c++11
 
 test_dir = test
 
@@ -8,6 +8,7 @@ test_exes = $(test_dir)/test_special_asserts.exe \
 			$(test_dir)/end_to_end_test.exe \
 			$(test_dir)/test_early_exit.exe \
 			$(test_dir)/sequence_equal.exe \
+			$(test_dir)/size_t_and_int.exe \
 			$(test_dir)/string_equal.exe
 
 end_to_end_corrects = $(wildcard $(test_dir)/*.correct.txt)
@@ -34,6 +35,7 @@ test: $(test_exes) $(test_dir)/end_to_end_test.exe
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe should_pass -q should_fail,quiet_run_subset_of_tests)
 	$(call run_and_diff,$(test_dir)/sequence_equal.exe,sequence_equal)
 	$(call run_and_diff,$(test_dir)/string_equal.exe,string_equal)
+	./$(test_dir)/size_t_and_int.exe
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< -c -o $@
