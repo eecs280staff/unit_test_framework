@@ -1,0 +1,50 @@
+Running test: char_array_eq
+PASS
+Running test: char_array_uneq
+FAIL
+Running test: string_eq
+FAIL
+Running test: string_uneq1
+FAIL
+Running test: string_uneq2
+FAIL
+Running test: string_uneq3
+FAIL
+Running test: string_uneq4
+FAIL
+Running test: string_uneq5
+FAIL
+
+*** Results ***
+** Test case "char_array_eq": PASS
+** Test case "char_array_uneq": FAIL
+In test , line 48: 
+{ s, p, a, m } != { e, g, g }
+
+** Test case "string_eq": FAIL
+In test , line 13: 
+spam != spam
+
+** Test case "string_uneq1": FAIL
+In test , line 18: 
+spam != egg
+
+** Test case "string_uneq2": FAIL
+In test , line 23: 
+spam != egg
+
+** Test case "string_uneq3": FAIL
+In test , line 27: 
+spam != egg
+
+** Test case "string_uneq4": FAIL
+In test , line 31: 
+spam != egg
+
+** Test case "string_uneq5": FAIL
+In test , line 36: 
+spam != { e, g, g }
+
+*** Summary ***
+Out of 8 tests run:
+7 failure(s), 0 error(s)

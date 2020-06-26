@@ -180,39 +180,51 @@ auto print_helper(std::ostream& os, const std::pair<First, Second>& t, int,
     return os << ')';
 }
 
-// This version of print_helper will be called when T is a sequence.
+// Helper function to print a sequence.
 template <class Sequence>
-auto print_helper(std::ostream& os, const Sequence& seq, int, ...)
-    -> decltype(print(os, *seq.begin()), print(os, *seq.end()))& {
-    if (seq.begin() == seq.end()) {
+auto print_sequence_helper(std::ostream &os, const Sequence& seq)
+    -> decltype(print(os, (*std::begin(seq), *std::end(seq))))& {
+    if (std::begin(seq) == std::end(seq)) {
         return os << "{}";
     }
 
-    auto it = seq.begin();
+    auto it = std::begin(seq);
     os << "{ ";
     print(os, *it);
-    for (++it; it != seq.end(); ++it) {
+    for (++it; it != std::end(seq); ++it) {
         os << ", ";
         print(os, *it);
     }
     return os << " }";
 }
 
-// This version of print_helper will be called when T is an array.
+// This version of print_helper will be called when T is a sequence.
+template <class Sequence>
+auto print_helper(std::ostream& os, const Sequence& seq, int, ...)
+    -> decltype(print(os, *seq.begin()), print(os, *seq.end()))& {
+   return print_sequence_helper(os, seq);
+}
+
+// This version of print_helper will be called when T is a non-char array.
+// This is separate from the sequence overload so that printing an
+// array as a sequence is preferred over printing it as a pointer
+// (using the first overload).
 template <class Elem, std::size_t N>
 std::ostream& print_helper(std::ostream& os, const Elem (&arr)[N], int, int) {
-    if (N == 0) {
-        return os << "{}";
-    }
+    return print_sequence_helper(os, arr);
+}
 
-    auto it = std::begin(arr);
-    os << "{ ";
-    print(os, *it);
-    for (++it; it != std::end(arr); ++it) {
-        os << ", ";
-        print(os, *it);
+// This version of print_helper will be called when T is a char array.
+// If the array contains a null terminator, it is printed as a string.
+// Otherwise, it is printed as a sequence.
+template <std::size_t N>
+std::ostream& print_helper(std::ostream& os, const char (&arr)[N], int, int) {
+    for (std::size_t i = 0; i < N; ++i) {
+        if (!arr[i]) {
+            return os << arr;
+        }
     }
-    return os << " }";
+    return print_sequence_helper(os, arr);
 }
 
 // This version of print_helper will be called when T does not have an

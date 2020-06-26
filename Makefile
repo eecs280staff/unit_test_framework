@@ -9,7 +9,8 @@ test_exes = $(test_dir)/test_special_asserts.exe \
 			$(test_dir)/test_early_exit.exe \
 			$(test_dir)/sequence_equal.exe \
 			$(test_dir)/size_t_and_int.exe \
-			$(test_dir)/string_equal.exe
+			$(test_dir)/string_equal.exe \
+			$(test_dir)/char_array.exe
 
 end_to_end_corrects = $(wildcard $(test_dir)/*.correct.txt)
 end_to_end_targets = $(end_to_end_corrects:.correct.txt=.end_to_end)
@@ -36,6 +37,7 @@ test: $(test_exes) $(test_dir)/end_to_end_test.exe
 	$(call run_and_diff,$(test_dir)/sequence_equal.exe,sequence_equal)
 	$(call run_and_diff,$(test_dir)/string_equal.exe,string_equal)
 	./$(test_dir)/size_t_and_int.exe
+	$(call run_and_diff,$(test_dir)/char_array.exe,char_array)
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< -c -o $@
