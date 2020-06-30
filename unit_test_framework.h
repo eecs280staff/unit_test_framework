@@ -281,30 +281,43 @@ struct is_equality_comparable<First, Second,
                               enable_if_equality_comparable<First, Second>>
     : std::true_type {};
 
+// Overloads for equality comparisons.
+template <typename First, typename Second>
+bool safe_equals_helper(const First& first, const Second& second) {
+  return first == second;
+}
+
+template <typename First, typename Second>
+bool safe_not_equals_helper(const First& first, const Second& second) {
+  return first != second;
+}
+
+// Allow size_t to correctly be compared to int.
+bool safe_equals_helper(std::size_t first, int second) {
+  return second >= 0 && static_cast<long long>(first) == second;
+}
+
+bool safe_equals_helper(int first, std::size_t second) {
+  return first >= 0 && first == static_cast<long long>(second);
+}
+
+bool safe_not_equals_helper(std::size_t first, int second) {
+  return second < 0 || static_cast<long long>(first) != second;
+}
+
+bool safe_not_equals_helper(int first, std::size_t second) {
+  return first < 0 || first != static_cast<long long>(second);
+}
+
 template <typename First, typename Second, typename = void>
 struct safe_equals {
     static_assert(is_equality_comparable<First, Second>::value,
                   "types cannot be compared with == and !=");
     static bool equals(const First& first, const Second& second) {
-        return first == second;
+        return safe_equals_helper(first, second);
     }
     static bool not_equals(const First& first, const Second& second) {
-        return first != second;
-    }
-};
-
-// Specializations to allow size_t to be compared to int.
-template <>
-struct safe_equals<std::size_t, int> {
-    static bool equals(std::size_t first, int second) {
-        return static_cast<long long>(first) == second;
-    }
-};
-
-template <>
-struct safe_equals<int, std::size_t> {
-    static bool equals(int first, std::size_t second) {
-        return first == static_cast<long long>(second);
+        return safe_not_equals_helper(first, second);
     }
 };
 

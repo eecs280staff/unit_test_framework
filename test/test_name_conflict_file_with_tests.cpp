@@ -4,4 +4,4 @@
 // test_name_conflict_file_with_non_static_func.cpp.
 TEST(my_test) {}
 
-TEST_MAIN();
+TEST_MAIN()

@@ -22,4 +22,4 @@ TEST(assert_almost_equal_precision_infinite) {
     ASSERT_ALMOST_EQUAL(.2 + .1, .3, 0);
 }
 
-TEST_MAIN();
+TEST_MAIN()
