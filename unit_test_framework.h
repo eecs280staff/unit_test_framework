@@ -367,8 +367,20 @@ void assert_sequence_equal(First&& first, Second&& second, int line_number) {
     auto it2 = begin(second);
     auto end1 = end(first);
     auto end2 = end(second);
+    auto len1 = std::distance(it1, end1);
+    auto len2 = std::distance(it2, end2);
+    if (len1 != len2) {  // different number of elements
+        std::ostringstream reason;
+        print(reason, first);
+        reason << " != ";
+        print(reason, second);
+        reason << " (sizes differ: " << len1 << " != " << len2 << ")";
+        throw TestFailure(reason.str(), line_number);
+    }
+
     bool equal = true;
-    for (; it1 != end1 and it2 != end2; ++it1, ++it2) {
+    std::size_t position = 0;
+    for (; it1 != end1 and it2 != end2; ++it1, ++it2, ++position) {
         if (not safe_equals<decltype(*it1), decltype(*it2)>::equals(
                 *it1, *it2)) {
             equal = false;
@@ -376,12 +388,16 @@ void assert_sequence_equal(First&& first, Second&& second, int line_number) {
         }
     }
 
-    if (not equal or it1 != end1 or
-        it2 != end2) {  // different number of elements
+    if (not equal) {
         std::ostringstream reason;
         print(reason, first);
         reason << " != ";
         print(reason, second);
+        reason << " (elements at position " << position << " differ: ";
+        print(reason, *it1);
+        reason << " != ";
+        print(reason, *it2);
+        reason << ")";
         throw TestFailure(reason.str(), line_number);
     }
 }

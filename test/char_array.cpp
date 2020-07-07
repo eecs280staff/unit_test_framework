@@ -42,9 +42,15 @@ TEST(char_array_eq) {
     ASSERT_SEQUENCE_EQUAL(arr1, arr2);
 }
 
-TEST(char_array_uneq) {
+TEST(char_array_uneq1) {
     char arr1[] = {'s', 'p', 'a', 'm'};
     char arr2[] = {'e', 'g', 'g'};
+    ASSERT_SEQUENCE_EQUAL(arr1, arr2);
+}
+
+TEST(char_array_uneq2) {
+    char arr1[] = {'s', 'p', 'a', 'm'};
+    char arr2[] = {'e', 'g', 'g', 's'};
     ASSERT_SEQUENCE_EQUAL(arr1, arr2);
 }
 
