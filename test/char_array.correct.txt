@@ -20,35 +20,35 @@ FAIL
 *** Results ***
 ** Test case "char_array_eq": PASS
 ** Test case "char_array_uneq1": FAIL
-In test , line 48: 
+In ASSERT_SEQUENCE_EQUAL(arr1, arr2), line 48:
 { s, p, a, m } != { e, g, g } (sizes differ: 4 != 3)
 
 ** Test case "char_array_uneq2": FAIL
-In test , line 54: 
+In ASSERT_SEQUENCE_EQUAL(arr1, arr2), line 54:
 { s, p, a, m } != { e, g, g, s } (elements at position 0 differ: s != e)
 
 ** Test case "string_eq": FAIL
-In test , line 13: 
+In ASSERT_SEQUENCE_EQUAL("spam", string("spam")), line 13:
 spam != spam (sizes differ: 5 != 4)
 
 ** Test case "string_uneq1": FAIL
-In test , line 18: 
+In ASSERT_SEQUENCE_EQUAL("spam", "egg"), line 18:
 spam != egg (sizes differ: 5 != 4)
 
 ** Test case "string_uneq2": FAIL
-In test , line 23: 
+In ASSERT_SEQUENCE_EQUAL("spam", arr), line 23:
 spam != egg (sizes differ: 5 != 4)
 
 ** Test case "string_uneq3": FAIL
-In test , line 27: 
+In ASSERT_SEQUENCE_EQUAL("spam", string("egg")), line 27:
 spam != egg (sizes differ: 5 != 3)
 
 ** Test case "string_uneq4": FAIL
-In test , line 31: 
+In ASSERT_EQUAL("spam", string("egg")), line 31:
 spam != egg
 
 ** Test case "string_uneq5": FAIL
-In test , line 36: 
+In ASSERT_SEQUENCE_EQUAL("spam", arr), line 36:
 spam != { e, g, g } (sizes differ: 5 != 3)
 
 *** Summary ***

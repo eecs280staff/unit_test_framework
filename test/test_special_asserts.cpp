@@ -20,7 +20,6 @@ void test_assert_almost_equal();
         assert(false);                                                        \
     }                                                                         \
     catch (TestFailure & e) {                                                 \
-        e.set_test_name("Special assert tests");                              \
         cout << e.to_string() << endl;                                        \
     }
 

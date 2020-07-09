@@ -7,6 +7,7 @@ test_dir = test
 test_exes = $(test_dir)/test_special_asserts.exe \
 			$(test_dir)/end_to_end_test.exe \
 			$(test_dir)/test_early_exit.exe \
+			$(test_dir)/pairs_and_sequences.exe \
 			$(test_dir)/sequence_equal.exe \
 			$(test_dir)/size_t_and_int.exe \
 			$(test_dir)/string_equal.exe \
@@ -34,6 +35,7 @@ test: $(test_exes) $(test_dir)/end_to_end_test.exe
 
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe should_pass,run_subset_of_tests_test)
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe should_pass -q should_fail,quiet_run_subset_of_tests)
+	$(call run_and_diff,$(test_dir)/pairs_and_sequences.exe,pairs_and_sequences)
 	$(call run_and_diff,$(test_dir)/sequence_equal.exe,sequence_equal)
 	$(call run_and_diff,$(test_dir)/string_equal.exe,string_equal)
 	./$(test_dir)/size_t_and_int.exe

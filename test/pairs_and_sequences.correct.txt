@@ -11,23 +11,23 @@ FAIL
 
 *** Results ***
 ** Test case "map_print": FAIL
-In test , line 28: 
+In ASSERT_EQUAL(m1, m2), line 28:
 { (hello,3), (world,-1) } != { (hello,4), (world,-1) }
 
 ** Test case "nested_pair_print": FAIL
-In test , line 44: 
+In ASSERT_EQUAL(m1, m2), line 44:
 { ((foo,bar),-1), ((hello,world),3) } != { ((bar,foo),-1), ((hello,world),3) }
 
 ** Test case "nested_vector_print": FAIL
-In test , line 34: 
+In ASSERT_EQUAL(vs1, vs2), line 34:
 { { 1.1, 2.3 }, { -4.6 } } != { { 1.1, 2.3 }, { -4.6, 8.7 } }
 
 ** Test case "pair_print": FAIL
-In test , line 18: 
+In ASSERT_EQUAL(p1, p2), line 18:
 (hello,3) != (hello,4)
 
 ** Test case "vector_print": FAIL
-In test , line 12: 
+In ASSERT_EQUAL(v1, v2), line 12:
 {} != { 3, 4 }
 
 *** Summary ***
