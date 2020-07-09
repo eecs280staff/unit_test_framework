@@ -1,0 +1,56 @@
+Running test: char_array_eq
+PASS
+Running test: char_array_uneq1
+FAIL
+Running test: char_array_uneq2
+FAIL
+Running test: string_eq
+FAIL
+Running test: string_uneq1
+FAIL
+Running test: string_uneq2
+FAIL
+Running test: string_uneq3
+FAIL
+Running test: string_uneq4
+FAIL
+Running test: string_uneq5
+FAIL
+
+*** Results ***
+** Test case "char_array_eq": PASS
+** Test case "char_array_uneq1": FAIL
+In test , line 48: 
+{ s, p, a, m } != { e, g, g } (sizes differ: 4 != 3)
+
+** Test case "char_array_uneq2": FAIL
+In test , line 54: 
+{ s, p, a, m } != { e, g, g, s } (elements at position 0 differ: s != e)
+
+** Test case "string_eq": FAIL
+In test , line 13: 
+spam != spam (sizes differ: 5 != 4)
+
+** Test case "string_uneq1": FAIL
+In test , line 18: 
+spam != egg (sizes differ: 5 != 4)
+
+** Test case "string_uneq2": FAIL
+In test , line 23: 
+spam != egg (sizes differ: 5 != 4)
+
+** Test case "string_uneq3": FAIL
+In test , line 27: 
+spam != egg (sizes differ: 5 != 3)
+
+** Test case "string_uneq4": FAIL
+In test , line 31: 
+spam != egg
+
+** Test case "string_uneq5": FAIL
+In test , line 36: 
+spam != { e, g, g } (sizes differ: 5 != 3)
+
+*** Summary ***
+Out of 9 tests run:
+8 failure(s), 0 error(s)
