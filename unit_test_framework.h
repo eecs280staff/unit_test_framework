@@ -124,17 +124,14 @@ public:
 
 class TestFailure {
 public:
-    TestFailure(std::string reason, int line_number)
-        : reason_m(move(reason)), line_number_m(line_number) {}
+    TestFailure(std::string reason, int line_number, const char* assertion_text)
+        : reason_m(move(reason)), line_number_m(line_number),
+          assertion_text_m(assertion_text) {}
 
     std::ostream& print(std::ostream& os) const {
-        os << "In test " << test_name_m << ", line " << line_number_m << ": \n"
+        os << "In " << assertion_text_m << ", line " << line_number_m << ":\n"
            << reason_m << '\n';
         return os;
-    }
-
-    void set_test_name(std::string test_name) {
-        test_name_m = move(test_name);
     }
 
     std::string to_string() const {
@@ -144,9 +141,9 @@ public:
     }
 
 private:
-    std::string test_name_m;
     std::string reason_m;
     int line_number_m;
+    const char* assertion_text_m;
 };
 std::ostream& operator<<(std::ostream& os, const TestFailure& test_failure);
 
@@ -247,31 +244,28 @@ std::ostream& print(std::ostream& os, const T& t) {
 
 // ----------------------------------------------------------------------------
 
-template <typename First, typename Second>
-void assert_equal(First&& first, Second&& second, int line_number);
-template <typename First, typename Second>
-void assert_not_equal(First&& first, Second&& second, int line_number);
-
-void assert_true(bool value, int line_number);
-void assert_false(bool value, int line_number);
-
-void assert_almost_equal(double first, double second, double precision,
-                         int line_number);
-
-#define ASSERT_EQUAL(first, second) assert_equal((first), (second), __LINE__);
+#define ASSERT_EQUAL(first, second)                                           \
+    assert_equal((first), (second), __LINE__,                                 \
+                 "ASSERT_EQUAL(" #first ", " #second ")");
 
 #define ASSERT_NOT_EQUAL(first, second)                                       \
-    assert_not_equal((first), (second), __LINE__);
+    assert_not_equal((first), (second), __LINE__,                             \
+                     "ASSERT_NOT_EQUAL(" #first ", " #second ")");
 
 #define ASSERT_SEQUENCE_EQUAL(first, second)                                  \
-    assert_sequence_equal((first), (second), __LINE__);
+    assert_sequence_equal((first), (second), __LINE__,                        \
+                          "ASSERT_SEQUENCE_EQUAL(" #first ", " #second ")");
 
-#define ASSERT_TRUE(value) assert_true((value), __LINE__);
+#define ASSERT_TRUE(value)                                                    \
+    assert_true((value), __LINE__, "ASSERT_TRUE(" #value ")");
 
-#define ASSERT_FALSE(value) assert_false((value), __LINE__);
+#define ASSERT_FALSE(value)                                                   \
+    assert_false((value), __LINE__, "ASSERT_FALSE(" #value ")");
 
 #define ASSERT_ALMOST_EQUAL(first, second, precision)                         \
-    assert_almost_equal((first), (second), (precision), __LINE__);
+    assert_almost_equal((first), (second), (precision), __LINE__,             \
+                        "ASSERT_ALMOST_EQUAL(" #first ", " #second ", "       \
+                        #precision ")");
 
 // Template logic to produce a static assertion failure when comparing
 // incomparable types.
@@ -334,7 +328,8 @@ struct safe_equals {
 };
 
 template <typename First, typename Second>
-void assert_equal(First&& first, Second&& second, int line_number) {
+void assert_equal(First&& first, Second&& second, int line_number,
+                  const char* assertion_text) {
     if (safe_equals<First, Second>::equals(first, second)) {
         return;
     }
@@ -342,11 +337,12 @@ void assert_equal(First&& first, Second&& second, int line_number) {
     print(reason, first);
     reason << " != ";
     print(reason, second);
-    throw TestFailure(reason.str(), line_number);
+    throw TestFailure(reason.str(), line_number, assertion_text);
 }
 
 template <typename First, typename Second>
-void assert_not_equal(First&& first, Second&& second, int line_number) {
+void assert_not_equal(First&& first, Second&& second, int line_number,
+                      const char* assertion_text) {
     if (safe_equals<First, Second>::not_equals(first, second)) {
         return;
     }
@@ -356,11 +352,12 @@ void assert_not_equal(First&& first, Second&& second, int line_number) {
     print(reason, first);
     reason << " == ";
     print(reason, second);
-    throw TestFailure(reason.str(), line_number);
+    throw TestFailure(reason.str(), line_number, assertion_text);
 }
 
 template <typename First, typename Second>
-void assert_sequence_equal(First&& first, Second&& second, int line_number) {
+void assert_sequence_equal(First&& first, Second&& second, int line_number,
+                           const char* assertion_text) {
     using std::begin;
     using std::end;
     auto it1 = begin(first);
@@ -375,7 +372,7 @@ void assert_sequence_equal(First&& first, Second&& second, int line_number) {
         reason << " != ";
         print(reason, second);
         reason << " (sizes differ: " << len1 << " != " << len2 << ")";
-        throw TestFailure(reason.str(), line_number);
+        throw TestFailure(reason.str(), line_number, assertion_text);
     }
 
     bool equal = true;
@@ -398,7 +395,7 @@ void assert_sequence_equal(First&& first, Second&& second, int line_number) {
         reason << " != ";
         print(reason, *it2);
         reason << ")";
-        throw TestFailure(reason.str(), line_number);
+        throw TestFailure(reason.str(), line_number, assertion_text);
     }
 }
 
@@ -618,26 +615,26 @@ std::string demangle(const char* typeinfo_name) {
 
 //------------------------------------------------------------------------------
 
-void assert_true(bool value, int line_number) {
+void assert_true(bool value, int line_number, const char* assertion_text) {
     if (value) {
         return;
     }
     std::ostringstream reason;
     reason << "Expected true, but was false";
-    throw TestFailure(reason.str(), line_number);
+    throw TestFailure(reason.str(), line_number, assertion_text);
 }
 
-void assert_false(bool value, int line_number) {
+void assert_false(bool value, int line_number, const char* assertion_text) {
     if (not value) {
         return;
     }
     std::ostringstream reason;
     reason << "Expected false, but was true";
-    throw TestFailure(reason.str(), line_number);
+    throw TestFailure(reason.str(), line_number, assertion_text);
 }
 
 void assert_almost_equal(double first, double second, double precision,
-                         int line_number) {
+                         int line_number, const char* assertion_text) {
     if (std::abs(first - second) <= precision) {
         return;
     }
@@ -647,7 +644,7 @@ void assert_almost_equal(double first, double second, double precision,
     // the output precision.
     reason.precision(20);
     reason << "Values too far apart: " << first << " and " << second;
-    throw TestFailure(reason.str(), line_number);
+    throw TestFailure(reason.str(), line_number, assertion_text);
 }
 
 #endif  // UNIT_TEST_FRAMEWORK_H

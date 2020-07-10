@@ -10,12 +10,12 @@ FAIL
 *** Results ***
 ** Test case "array_equal": PASS
 ** Test case "array_unequal": FAIL
-In test , line 20: 
+In ASSERT_SEQUENCE_EQUAL(a, b), line 20:
 { 1, 2 } != { 1, 3 } (elements at position 1 differ: 2 != 3)
 
 ** Test case "array_vector_equal": PASS
 ** Test case "array_vector_unequal": FAIL
-In test , line 26: 
+In ASSERT_SEQUENCE_EQUAL(a, b), line 26:
 { 1, 2 } != { 1, 2, -2.1 } (sizes differ: 2 != 3)
 
 *** Summary ***
