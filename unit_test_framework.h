@@ -125,7 +125,7 @@ public:
 class TestFailure {
 public:
     TestFailure(std::string reason, int line_number, const char* assertion_text)
-        : reason_m(move(reason)), line_number_m(line_number),
+        : reason_m(std::move(reason)), line_number_m(line_number),
           assertion_text_m(assertion_text) {}
 
     std::ostream& print(std::ostream& os) const {
@@ -578,8 +578,9 @@ std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
     }
 
     if (test_names_to_run.empty()) {
-        transform(
-            begin(tests_), end(tests_), back_inserter(test_names_to_run),
+        std::transform(
+            std::begin(tests_), std::end(tests_),
+            std::back_inserter(test_names_to_run),
             [](const std::pair<std::string, TestCase>& p) { return p.first; });
     }
     return test_names_to_run;
