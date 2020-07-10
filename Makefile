@@ -1,6 +1,7 @@
 CXX = g++
 CPPFLAGS = -MMD -MP -I.
 CXXFLAGS = -Wall -Wextra -Werror -pedantic --std=c++11
+CXXFLAGS_NO_WARNINGS = $(filter-out -W%,$(CXXFLAGS))
 
 test_dir = test
 
@@ -26,6 +27,9 @@ test: $(test_exes) $(test_dir)/end_to_end_test.exe
 					   $(test_dir)/test_name_conflict_file_with_non_static_func.cpp \
 					   $(test_dir)/test_name_conflict_file_with_tests.cpp \
 					   -o no_conflict.exe
+
+	! $(CXX) $(CXXFLAGS_NO_WARNINGS) -I. $(test_dir)/array_compare_error.cpp
+	! $(CXX) $(CXXFLAGS_NO_WARNINGS) -I. $(test_dir)/missing_overload_error.cpp
 
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe,end_to_end_test)
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe --show_test_names,show_test_names_test)
