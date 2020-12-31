@@ -23,24 +23,26 @@ jobs:
       #
       # Virtual Environments: OSes and preinstalled software:
       # https://github.com/actions/virtual-environments
+      #
+      # Many are commented out to avoid going over budget
       matrix:
         include:
           - os: ubuntu-18.04
             compiler: g++-4.8
-          - os: ubuntu-16.04
-            compiler: g++-5  # pre-installed only on GH Action's Ubuntu 16.04
-          - os: ubuntu-18.04
-            compiler: g++-7
-          - os: ubuntu-18.04
-            compiler: g++-8
-          - os: ubuntu-18.04
-            compiler: g++-9
-          - os: ubuntu-18.04
-            compiler: g++-10
-          - os: ubuntu-18.04
-            compiler: clang++-8
-          - os: ubuntu-18.04
-            compiler: clang++-9
+          # - os: ubuntu-16.04
+          #   compiler: g++-5
+          # - os: ubuntu-18.04
+          #   compiler: g++-7
+          # - os: ubuntu-18.04
+          #   compiler: g++-8
+          # - os: ubuntu-18.04
+          #   compiler: g++-9
+          # - os: ubuntu-18.04
+          #   compiler: g++-10
+          # - os: ubuntu-18.04
+          #   compiler: clang++-8
+          # - os: ubuntu-18.04
+          #   compiler: clang++-9
           - os: ubuntu-latest
             compiler: g++
           - os: macOS-latest
