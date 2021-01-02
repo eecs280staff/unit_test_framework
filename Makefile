@@ -1,7 +1,7 @@
-CXX = g++
-CPPFLAGS = -MMD -MP -I.
-CXXFLAGS = -Wall -Wextra -Werror -pedantic --std=c++11
-CXXFLAGS_NO_WARNINGS = $(filter-out -W%,$(CXXFLAGS))
+CXX ?= g++
+CPPFLAGS ?= -MMD -MP -I.
+CXXFLAGS ?= -Wall -Wextra -Werror -pedantic --std=c++11
+CXXFLAGS_NO_WARNINGS ?= $(filter-out -W%,$(CXXFLAGS))
 
 test_dir = test
 
