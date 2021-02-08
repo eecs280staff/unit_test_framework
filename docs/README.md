@@ -265,7 +265,7 @@ On the other hand, when run against a correct implementation, all of your tests 
 we call it _valid_.
 
 Once you feel your tests are thorough, submit `arrays_tests.cpp` to the unit test framework tutorial
-autograder. It will check your tests against a set of buggy implementations
+[autograder](https://autograder.io/). It will check your tests against a set of buggy implementations
 of `slideRight` and `flip`, similar to the buggy versions functions provided with
 this tutorial. To earn points, your tests must detect
 (i.e. fail when run against) each of the bugs. Note that the autograder will
@@ -293,4 +293,3 @@ You may have noticed some duplicated code in your test cases, particularly when 
 `ASSERT_SEQUENCE_EQUAL()`. The latter works on arrays, but not on
 pointers that decayed from arrays. You will not be able to use
 `ASSERT_SEQUENCE_EQUAL()` in `compare_arrays()`.
-
