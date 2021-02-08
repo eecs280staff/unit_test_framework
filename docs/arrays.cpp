@@ -1,7 +1,5 @@
 #include "arrays.h"
 
-using namespace std;
-
 // REQUIRES: there are at least n elements in arr;
 //           n >= 1
 // MODIFIES: the elements in arr
