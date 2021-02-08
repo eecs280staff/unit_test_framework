@@ -253,6 +253,20 @@ Compile and run the tests with the following commands:
 ```console
 $ g++ -Wall -Werror -pedantic -O1 -std=c++11 arrays.cpp arrays_tests.cpp -o arrays_tests.exe
 $ ./arrays_tests.exe
+Running test: test_flip_1
+PASS
+Running test: test_slide_right_1
+FAIL
+
+*** Results ***
+** Test case "test_flip_1": PASS
+** Test case "test_slide_right_1": FAIL
+In ASSERT_TRUE(compare_arrays(testing, 5, correct, 5)), line 24:
+Expected true, but was false
+
+*** Summary ***
+Out of 2 tests run:
+1 failure(s), 0 error(s)
 ```
 
 A failed test indicates there's a bug in our `arrays.cpp` code. The tests above caught
