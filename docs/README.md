@@ -26,8 +26,8 @@ $ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master
 For this tutorial, you'll need two files, `arrays.h` and `arrays.cpp`.
 
 ```console
-$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/arrays.h
-$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/arrays.cpp
+$ wget https://eecs280staff.github.io/unit_test_framework/arrays.h
+$ wget https://eecs280staff.github.io/unit_test_framework/arrays.cpp
 ```
 
 These functions contain implementations of two functions (`slideRight()` and `flip()`) that work with arrays. The implementations each contain a bug! You'll catch the bugs by writing tests.
