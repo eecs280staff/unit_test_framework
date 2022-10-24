@@ -39,6 +39,67 @@ using Test_func_t = void (*)();
     TEST_SUITE_INSTANCE();
 
 
+// colored text contributed by Nova Berman <nober@umich.edu>
+namespace Colors {
+    // Motivation for NO_COLOR: https://no-color.org/
+    enum env_status {
+        UNCHECKED,
+        NO_COLOR,
+        COLOR
+    };
+    env_status status = UNCHECKED;
+
+    void update_env_status() {
+        if (status == env_status::UNCHECKED) {
+            char *no_color = getenv("NO_COLOR");
+            if (no_color == nullptr || no_color[0] == '\0') 
+                status = env_status::COLOR;
+            else status = env_status::NO_COLOR;
+        }
+    }
+    
+    std::string pass() {
+        update_env_status();
+        if (status == COLOR) {
+            return "\033[32;1mPASS\033[0m";
+        }
+        return "PASS";
+    }
+
+    std::string fail() {
+        update_env_status();
+        if (status == COLOR) {
+            return "\033[31;1mFAIL\033[0m";
+        }
+        return "FAIL";
+    }
+
+    std::string err() {
+        update_env_status();
+        if (status == COLOR) {
+            return "\033[31;1mERROR\033[0m";
+        }
+        return "ERROR";
+    }
+
+    std::string red_bold() {
+        update_env_status();
+        if (status == COLOR) return "\033[31;1m";
+        return "";
+    }
+
+    std::string green_bold() {
+        update_env_status();
+        if (status == COLOR) return "\033[32;1m";
+        return "";
+    }
+
+    std::string reset() {
+        return "\033[0m";
+    }
+}
+
+
 struct TestCase {
     TestCase(const std::string& name_, Test_func_t test_func_)
         : name(name_), test_func(test_func_) {}
@@ -411,6 +472,7 @@ void assert_sequence_equal(First&& first, Second&& second, int line_number,
     bool TestSuite::incomplete = false;                                       \
     TestSuite* TestSuite::instance = &TestSuite::get()
 
+
 void TestCase::run(bool quiet_mode) {
     try {
         if (not quiet_mode) {
@@ -420,14 +482,14 @@ void TestCase::run(bool quiet_mode) {
         test_func();
 
         if (not quiet_mode) {
-            std::cout << "PASS" << std::endl;
+            std::cout << Colors::pass() << std::endl;
         }
     }
     catch (TestFailure& failure) {
         failure_msg = failure.to_string();
 
         if (not quiet_mode) {
-            std::cout << "FAIL" << std::endl;
+            std::cout << Colors::fail() << std::endl;
         }
     }
     catch (std::exception& e) {
@@ -438,7 +500,7 @@ void TestCase::run(bool quiet_mode) {
         exception_msg = oss.str();
 
         if (not quiet_mode) {
-            std::cout << "ERROR" << std::endl;
+            std::cout << Colors::err() << std::endl;
         }
     }
 }
@@ -452,19 +514,19 @@ void TestCase::print(bool quiet_mode) {
     }
 
     if (not failure_msg.empty()) {
-        std::cout << "FAIL" << std::endl;
+        std::cout << Colors::fail() << std::endl;
         if (not quiet_mode) {
             std::cout << failure_msg << std::endl;
         }
     }
     else if (not exception_msg.empty()) {
-        std::cout << "ERROR" << std::endl;
+        std::cout << Colors::err() << std::endl;
         if (not quiet_mode) {
             std::cout << exception_msg << std::endl;
         }
     }
     else {
-        std::cout << "PASS" << std::endl;
+        std::cout << Colors::pass() << std::endl;
     }
 }
 
@@ -509,7 +571,11 @@ int TestSuite::run_tests(int argc, char** argv) {
         tests_.at(test_name).run(quiet_mode);
     }
 
-    std::cout << "\n*** Results ***" << std::endl;
+    // 2K: delete all characters in line
+    // F: move up 1 line
+    // G: move to beginning of line
+    for (size_t _ = 0; _ < tests_.size() * 2; _++) std::cout << "\033[2K\033[F\033[G";
+    std::cout << "\033[2K*** Results ***" << std::endl;
     for (auto test_name : test_names_to_run) {
         tests_.at(test_name).print(quiet_mode);
     }
@@ -529,8 +595,10 @@ int TestSuite::run_tests(int argc, char** argv) {
         std::cout << "*** Summary ***" << std::endl;
         std::cout << "Out of " << test_names_to_run.size()
                   << " tests run:" << std::endl;
-        std::cout << num_failures << " failure(s), " << num_errors
-                  << " error(s)" << std::endl;
+        std::cout << ((num_failures + num_errors) ? 
+                        Colors::red_bold() : Colors::green_bold())
+                  << num_failures << " failure(s), " << num_errors
+                  << " error(s)" << Colors::reset() << std::endl;
     }
 
     if (num_failures == 0 and num_errors == 0) {
