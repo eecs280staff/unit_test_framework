@@ -58,44 +58,18 @@ namespace Colors {
         }
     }
     
-    std::string pass() {
-        update_env_status();
+    std::string green(std::string text) {
         if (status == COLOR) {
-            return "\033[32;1mPASS\033[0m";
+            return "\033[32;1m" + text + "\033[0m";
         }
-        return "PASS";
+        return text;
     }
 
-    std::string fail() {
-        update_env_status();
+    std::string red(std::string text) {
         if (status == COLOR) {
-            return "\033[31;1mFAIL\033[0m";
+            return "\033[31;1m" + text + "\033[0m";
         }
-        return "FAIL";
-    }
-
-    std::string err() {
-        update_env_status();
-        if (status == COLOR) {
-            return "\033[31;1mERROR\033[0m";
-        }
-        return "ERROR";
-    }
-
-    std::string red_bold() {
-        update_env_status();
-        if (status == COLOR) return "\033[31;1m";
-        return "";
-    }
-
-    std::string green_bold() {
-        update_env_status();
-        if (status == COLOR) return "\033[32;1m";
-        return "";
-    }
-
-    std::string reset() {
-        return "\033[0m";
+        return text;
     }
 }
 
@@ -482,14 +456,14 @@ void TestCase::run(bool quiet_mode) {
         test_func();
 
         if (not quiet_mode) {
-            std::cout << Colors::pass() << std::endl;
+            std::cout << Colors::green("PASS") << std::endl;
         }
     }
     catch (TestFailure& failure) {
         failure_msg = failure.to_string();
 
         if (not quiet_mode) {
-            std::cout << Colors::fail() << std::endl;
+            std::cout << Colors::red("FAIL") << std::endl;
         }
     }
     catch (std::exception& e) {
@@ -500,7 +474,7 @@ void TestCase::run(bool quiet_mode) {
         exception_msg = oss.str();
 
         if (not quiet_mode) {
-            std::cout << Colors::err() << std::endl;
+            std::cout << Colors::red("ERROR") << std::endl;
         }
     }
 }
@@ -514,19 +488,19 @@ void TestCase::print(bool quiet_mode) {
     }
 
     if (not failure_msg.empty()) {
-        std::cout << Colors::fail() << std::endl;
+        std::cout << Colors::red("FAIL") << std::endl;
         if (not quiet_mode) {
             std::cout << failure_msg << std::endl;
         }
     }
     else if (not exception_msg.empty()) {
-        std::cout << Colors::err() << std::endl;
+        std::cout << Colors::red("ERROR") << std::endl;
         if (not quiet_mode) {
             std::cout << exception_msg << std::endl;
         }
     }
     else {
-        std::cout << Colors::pass() << std::endl;
+        std::cout << Colors::green("PASS") << std::endl;
     }
 }
 
@@ -551,7 +525,17 @@ private:
     bool& incomplete;
 };
 
+void clear_output(size_t num_lines) {
+    // 2K: delete all characters in line
+    // F: move up 1 line
+    // G: move to beginning of line
+    for (size_t i = 0; i < num_lines; i++) 
+        std::cout << "\033[2K\033[F\033[G";
+    std::cout << "\033[2K";
+}
+
 int TestSuite::run_tests(int argc, char** argv) {
+    Colors::update_env_status();
     SetComplete completer(TestSuite::incomplete);
     std::vector<std::string> test_names_to_run;
     try {
@@ -571,11 +555,8 @@ int TestSuite::run_tests(int argc, char** argv) {
         tests_.at(test_name).run(quiet_mode);
     }
 
-    // 2K: delete all characters in line
-    // F: move up 1 line
-    // G: move to beginning of line
-    for (size_t _ = 0; _ < tests_.size() * 2; _++) std::cout << "\033[2K\033[F\033[G";
-    std::cout << "\033[2K*** Results ***" << std::endl;
+    if (!quiet_mode) clear_output(tests_.size() * 2);
+    std::cout << "*** Results ***" << std::endl;
     for (auto test_name : test_names_to_run) {
         tests_.at(test_name).print(quiet_mode);
     }
@@ -595,10 +576,14 @@ int TestSuite::run_tests(int argc, char** argv) {
         std::cout << "*** Summary ***" << std::endl;
         std::cout << "Out of " << test_names_to_run.size()
                   << " tests run:" << std::endl;
-        std::cout << ((num_failures + num_errors) ? 
-                        Colors::red_bold() : Colors::green_bold())
-                  << num_failures << " failure(s), " << num_errors
-                  << " error(s)" << Colors::reset() << std::endl;
+        std::ostringstream failures_and_errors;
+        failures_and_errors << num_failures << " failure(s), " 
+                            << num_errors << " error(s)";
+        if (num_failures + num_errors) {
+            std::cout << Colors::red(failures_and_errors.str()) << std::endl;
+        } else {
+            std::cout << Colors::green(failures_and_errors.str()) << std::endl;
+        }
     }
 
     if (num_failures == 0 and num_errors == 0) {
