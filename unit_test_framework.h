@@ -108,6 +108,10 @@ public:
         quiet_mode = true;
     }
 
+    void enable_show_completed() {
+        show_completed = true;
+    }
+
     std::ostream& print_test_names(std::ostream& os) {
         for (const auto& test_pair : tests_) {
             os << test_pair.first << '\n';
@@ -139,6 +143,7 @@ private:
     static TestSuite* instance;
     std::map<std::string, TestCase> tests_;
 
+    bool show_completed = false;
     bool quiet_mode = false;
     static bool incomplete;
 };
@@ -555,7 +560,8 @@ int TestSuite::run_tests(int argc, char** argv) {
         tests_.at(test_name).run(quiet_mode);
     }
 
-    if (!quiet_mode) clear_output(tests_.size() * 2);
+    if (!quiet_mode && !show_completed) clear_output(tests_.size() * 2);
+    else std::cout << std::endl;
     std::cout << "*** Results ***" << std::endl;
     for (auto test_name : test_names_to_run) {
         tests_.at(test_name).print(quiet_mode);
@@ -607,6 +613,10 @@ std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
                  argv[i] == std::string("-q")) {
             TestSuite::get().enable_quiet_mode();
         }
+        else if (argv[i] == std::string("--show_completed") or
+                 argv[i] == std::string("-s")) {
+            TestSuite::get().enable_show_completed();
+        }
         else if (argv[i] == std::string("--help") or
                  argv[i] == std::string("-h")) {
             std::cout << "usage: " << argv[0]
@@ -617,6 +627,8 @@ std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
                 << " -n, --show_test_names\t print the names of all "
                    "discovered test cases and exit\n"
                 << " -q, --quiet\t\t print a reduced summary of test results\n"
+                << " -s, --show_completed\t disable the clearing of running "
+                   "tests when the results are printed\n" 
                 << " TEST_NAME ...\t\t run only the test cases whose names "
                    "are "
                    "listed here. Note: If no test names are specified, all "

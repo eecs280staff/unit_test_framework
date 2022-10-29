@@ -55,7 +55,7 @@ $(test_dir)/%.exe: $(test_dir)/%.o
 # 1. executable plus args
 # 2. base for .correct.txt and .out.txt files
 define run_and_diff
-	-./$1 > $(test_dir)/$2.out.txt 2>&1;
+	-NO_COLOR=1 ./$1 -s > $(test_dir)/$2.out.txt 2>&1;
 	diff -q $(test_dir)/$2.correct.txt $(test_dir)/$2.out.txt || sdiff $(test_dir)/$2.correct.txt $(test_dir)/$2.out.txt;
 endef
 
