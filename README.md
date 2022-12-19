@@ -1,7 +1,7 @@
 Unit Test Framework
 ===================
 
-[![`master` Build Status](https://travis-ci.com/eecs280staff/unit_test_framework.svg?branch=master)](https://travis-ci.com/eecs280staff/unit_test_framework)
+[![`main` Build Status](https://travis-ci.com/eecs280staff/unit_test_framework.svg?branch=main)](https://travis-ci.com/eecs280staff/unit_test_framework)
 
 A lightweight, easy to use, C++11 unit testing framework implemented in a single `.h` file.
 
@@ -11,7 +11,7 @@ Publicly available tutorial: [https://eecs280staff.github.io/unit_test_framework
 ## Quickstart
 Install the unit test framework by copying `unit_test_framework.h` into your project.
 ```console
-$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.h
+$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/main/unit_test_framework.h
 ```
 
 Get the unit test example.
