@@ -20,7 +20,7 @@ In this tutorial, you will learn how to write test cases using a lightweight fra
 First, you will need the file `unit_test_framework.h`. This file is included with the starter code for EECS 280 projects where you are expected to use it. You can also download it directly (e.g. for this tutorial) with the following command.
 
 ```console
-$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/master/unit_test_framework.h
+$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/main/unit_test_framework.h
 ```
 
 For this tutorial, you'll need two files, `arrays.h` and `arrays.cpp`.

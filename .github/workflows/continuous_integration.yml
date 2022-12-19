@@ -1,16 +1,16 @@
 # GitHub Continuous Integration Configuration
 #
 # EECS 280 contributing docs and GitHub Action docs:
-# https://github.com/eecs280staff/p1-stats/blob/master/CONTRIBUTING.md
+# https://github.com/eecs280staff/p1-stats/blob/main/CONTRIBUTING.md
 # https://docs.github.com/en/free-pro-team@latest/actions
 name: Regression-Tests
 
 # Define conditions for when to run this action
 on:
   pull_request: # Run on all pull requests
-  push: # Run on all pushes to master
+  push: # Run on all pushes to main
     branches:
-      - master
+      - main
 
 # A workflow run is made up of one or more jobs.  Each job has an id.  For
 # example, "functional-tests (macOS-latest, g++)".
