@@ -80,3 +80,22 @@ jobs:
       #   if: ${{ failure() }}
       #   uses: mxschmitt/action-tmate@v3
       # /\ UNCOMMENT /\
+
+
+  files-up-to-date:
+    runs-on: ubuntu-latest
+    # Sequence of tasks for this job
+    steps:
+      # Check out latest code using a pre-existing GH action
+      # Docs: https://github.com/actions/checkout
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Verify .h and .hpp versions are identical
+        run: |
+          diff unit_test_framework.h unit_test_framework.hpp
+
+      - name: How to fix this failing CI job
+        if: ${{ failure() }}
+        run: |
+          echo "unit_test_framework.h and unit_test_framework.hpp must be identical"
