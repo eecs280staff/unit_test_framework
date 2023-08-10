@@ -3,15 +3,15 @@ Unit Test Framework
 
 [![`main` Build Status](https://travis-ci.com/eecs280staff/unit_test_framework.svg?branch=main)](https://travis-ci.com/eecs280staff/unit_test_framework)
 
-A lightweight, easy to use, C++11 unit testing framework implemented in a single `.h` file.
+A lightweight, easy to use, C++11 unit testing framework implemented in a single `.hpp` file.
 
 Publicly available tutorial: [https://eecs280staff.github.io/unit_test_framework/](https://eecs280staff.github.io/unit_test_framework/)
 
 
 ## Quickstart
-Install the unit test framework by copying `unit_test_framework.h` into your project.
+Install the unit test framework by copying `unit_test_framework.hpp` into your project.
 ```console
-$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/main/unit_test_framework.h
+$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/main/unit_test_framework.hpp
 ```
 
 Get the unit test example.
@@ -40,7 +40,7 @@ The example `my_tests.cpp` looks like this:
 ```c++
 // File: my_tests.cpp
 
-#include "unit_test_framework.h"
+#include "unit_test_framework.hpp"
 
 // TEST takes in one argument: the name of the test case.
 // Note that the name of the test case must be a valid function name in C++.
@@ -64,7 +64,7 @@ TEST_MAIN()
 
 
 ## How to write a test case: The `TEST()` macro
-Test cases can be declared using the special `TEST()` macro defined in `unit_test_framework.h`:
+Test cases can be declared using the special `TEST()` macro defined in `unit_test_framework.hpp`:
 ```c++
 TEST(<test_name>) {
     // test case code
