@@ -1,4 +1,4 @@
-#include "unit_test_framework.h"
+#include "unit_test_framework.hpp"
 
 TEST(size_t_and_int) {
   std::size_t s = 3u;

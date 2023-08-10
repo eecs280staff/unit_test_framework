@@ -1,4 +1,4 @@
-#include "arrays.h"
+#include "arrays.hpp"
 
 // REQUIRES: there are at least n elements in arr;
 //           n >= 1
