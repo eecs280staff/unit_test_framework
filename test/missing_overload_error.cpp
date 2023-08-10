@@ -1,4 +1,4 @@
-#include "unit_test_framework.h"
+#include "unit_test_framework.hpp"
 
 struct A {
   bool operator==(const A &rhs) const {

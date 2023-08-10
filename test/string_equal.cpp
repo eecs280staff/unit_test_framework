@@ -1,5 +1,5 @@
 #include <string>
-#include "unit_test_framework.h"
+#include "unit_test_framework.hpp"
 
 TEST(string_equal) {
   std::string s1 = "hello";

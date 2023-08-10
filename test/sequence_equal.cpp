@@ -1,5 +1,5 @@
 #include <vector>
-#include "unit_test_framework.h"
+#include "unit_test_framework.hpp"
 
 TEST(array_equal) {
   int a[] = { 1, 2 };
