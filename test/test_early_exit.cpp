@@ -1,4 +1,4 @@
-#include "unit_test_framework.h"
+#include "unit_test_framework.hpp"
 
 TEST(early_exit) {
     std::exit(0);

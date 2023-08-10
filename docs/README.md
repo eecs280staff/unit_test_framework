@@ -17,16 +17,16 @@ In this tutorial, you will learn how to write test cases using a lightweight fra
 
 # Setting Up
 
-First, you will need the file `unit_test_framework.h`. This file is included with the starter code for EECS 280 projects where you are expected to use it. You can also download it directly (e.g. for this tutorial) with the following command.
+First, you will need the file `unit_test_framework.hpp`. This file is included with the starter code for EECS 280 projects where you are expected to use it. You can also download it directly (e.g. for this tutorial) with the following command.
 
 ```console
-$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/main/unit_test_framework.h
+$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/main/unit_test_framework.hpp
 ```
 
-For this tutorial, you'll need two files, `arrays.h` and `arrays.cpp`.
+For this tutorial, you'll need two files, `arrays.hpp` and `arrays.cpp`.
 
 ```console
-$ wget https://eecs280staff.github.io/unit_test_framework/arrays.h
+$ wget https://eecs280staff.github.io/unit_test_framework/arrays.hpp
 $ wget https://eecs280staff.github.io/unit_test_framework/arrays.cpp
 ```
 
@@ -35,8 +35,8 @@ These functions contain implementations of two functions (`slideRight()` and `fl
 Your tests should go in a new file, called `arrays_tests.cpp`. Add the following code to `arrays_tests.cpp`:
 
 ```c++
-#include "arrays.h"
-#include "unit_test_framework.h"
+#include "arrays.hpp"
+#include "unit_test_framework.hpp"
 
 // We define a test case with the TEST(<test_name>) macro.
 // <test_name> can be any valid C++ function name.
@@ -112,8 +112,8 @@ Assertion | Description
 
 # Example: Tests for an `add()` function
 
-Suppose we have an `add()` function that computes the sum of two
-`double` arguments:
+Suppose we have an `add()` function, defined in the file
+`eecs280math.hpp`, that computes the sum of two `double` arguments:
 
 ```c++
 double add(double first, double second) {
@@ -190,8 +190,8 @@ TEST(add_basic) {
 Finally, let's add `TEST_MAIN()` and any `#include`s that we need:
 
 ```c++
-#include "eecs280math.h"
-#include "unit_test_framework.h"
+#include "eecs280math.hpp"
+#include "unit_test_framework.hpp"
 
 TEST(add_basic) {
   double a = 0.1;
@@ -212,8 +212,8 @@ Now, let's add some real test cases for `slideRight()` and `flip()` to `arrays_t
 For example, here's one test for each function (you can replace your existing code in `arrays_tests.cpp` with the code below):
 
 ```c++
-#include "arrays.h"
-#include "unit_test_framework.h"
+#include "arrays.hpp"
+#include "unit_test_framework.hpp"
 
 // A helper function for comparing arrays. Returns true if the
 // arrays are the same size and contain the same values.

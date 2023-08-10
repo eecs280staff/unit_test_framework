@@ -1,6 +1,6 @@
 // File: my_tests.cpp
 
-#include "unit_test_framework.h"
+#include "unit_test_framework.hpp"
 
 // TEST takes in one argument: the name of the test case.
 // Note that the name of the test case must be a valid function name in C++.

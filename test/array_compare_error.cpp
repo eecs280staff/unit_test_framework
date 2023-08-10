@@ -1,4 +1,4 @@
-#include "unit_test_framework.h"
+#include "unit_test_framework.hpp"
 
 TEST(foo) {
   int c[] = { 1, 2 };
