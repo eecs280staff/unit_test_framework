@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <exception>
 #include <stdexcept>
+#include <regex>
 
 // For compatibility with Visual Studio
 #include <ciso646>
@@ -542,6 +543,7 @@ int TestSuite::run_tests(int argc, char** argv) {
 std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
                                                           char** argv) {
     std::vector<std::string> test_names_to_run;
+    bool regexp_matching = false;
     for (auto i = 1; i < argc; ++i) {
         if (argv[i] == std::string("--show_test_names") or
             argv[i] == std::string("-n")) {
@@ -554,13 +556,18 @@ std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
                  argv[i] == std::string("-q")) {
             TestSuite::get().enable_quiet_mode();
         }
+        else if (argv[i] == std::string("--regexp") or
+                 argv[i] == std::string("-e")) {
+          regexp_matching = true;
+        }
         else if (argv[i] == std::string("--help") or
                  argv[i] == std::string("-h")) {
             std::cout << "usage: " << argv[0]
-                      << " [-h] [-n] [-q] [[TEST_NAME] ...]\n";
+                      << " [-h] [-e] [-n] [-q] [[TEST_NAME] ...]\n";
             std::cout
                 << "optional arguments:\n"
                 << " -h, --help\t\t show this help message and exit\n"
+                << " -e, --regexp\t\t treat TEST_NAME as a regular expression\n"
                 << " -n, --show_test_names\t print the names of all "
                    "discovered test cases and exit\n"
                 << " -q, --quiet\t\t print a reduced summary of test results\n"
@@ -582,6 +589,23 @@ std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
             std::begin(tests_), std::end(tests_),
             std::back_inserter(test_names_to_run),
             [](const std::pair<std::string, TestCase>& p) { return p.first; });
+    }
+    else if (regexp_matching) {
+        std::ostringstream pattern;
+        for (auto iter = test_names_to_run.begin();
+             iter != test_names_to_run.end(); ++iter) {
+            if (iter != test_names_to_run.begin()) {
+                pattern << "|";
+            }
+            pattern << "(" << *iter << ")";
+        }
+        std::regex name_regex{pattern.str()};
+        test_names_to_run.clear();
+        for (const auto& test_pair : tests_) {
+            if (std::regex_match(test_pair.first, name_regex)) {
+                test_names_to_run.push_back(test_pair.first);
+            }
+        }
     }
     return test_names_to_run;
 }

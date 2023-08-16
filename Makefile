@@ -39,11 +39,14 @@ test: $(test_exes) $(test_dir)/end_to_end_test.exe
 
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe should_pass,run_subset_of_tests_test)
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe should_pass -q should_fail,quiet_run_subset_of_tests)
+	$(call run_and_diff,$(test_dir)/end_to_end_test.exe -e ".*almost.*",regexp_test1)
+	$(call run_and_diff,$(test_dir)/end_to_end_test.exe --regexp ".*almost.*" "should.*",regexp_test2)
 	$(call run_and_diff,$(test_dir)/pairs_and_sequences.exe,pairs_and_sequences)
 	$(call run_and_diff,$(test_dir)/sequence_equal.exe,sequence_equal)
 	$(call run_and_diff,$(test_dir)/string_equal.exe,string_equal)
 	./$(test_dir)/size_t_and_int.exe
 	$(call run_and_diff,$(test_dir)/char_array.exe,char_array)
+	@echo TESTS PASSED
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< -c -o $@

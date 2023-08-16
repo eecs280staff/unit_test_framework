@@ -104,12 +104,13 @@ You can use any amount of these special asserts in your test cases. You can also
 ## Command line options
 ```console
 $ ./my_tests.exe -h
-usage: ./my_tests.exe [-h] [-n] [-q] [[TEST_NAME] ...]
+usage: ./my_tests.exe [-h] [-e] [-n] [-q] [[TEST_NAME] ...]
 optional arguments:
- -h, --help	             show this help message and exit
+ -h, --help		 show this help message and exit
+ -e, --regexp		 treat TEST_NAME as a regular expression
  -n, --show_test_names	 print the names of all discovered test cases and exit
- -q, --quiet             print a reduced summary of test results
- TEST_NAME ...           run only the test cases whose names are listed here. Note: If no test names are specified, all discovered tests are run by default.
+ -q, --quiet		 print a reduced summary of test results
+ TEST_NAME ...		 run only the test cases whose names are listed here. Note: If no test names are specified, all discovered tests are run by default.
 ```
 
 ```console

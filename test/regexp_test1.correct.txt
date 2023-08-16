@@ -1,0 +1,17 @@
+Running test: assert_almost_equal_precision_infinite
+FAIL
+Running test: assert_almost_equal_precision_round
+FAIL
+
+*** Results ***
+** Test case "assert_almost_equal_precision_infinite": FAIL
+In ASSERT_ALMOST_EQUAL(.2 + .1, .3, 0), line 22:
+Values too far apart: 0.30000000000000004441 and 0.2999999999999999889
+
+** Test case "assert_almost_equal_precision_round": FAIL
+In ASSERT_ALMOST_EQUAL(.75, .5, .1), line 18:
+Values too far apart: 0.75 and 0.5
+
+*** Summary ***
+Out of 2 tests run:
+2 failure(s), 0 error(s)
