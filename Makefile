@@ -26,7 +26,7 @@ test: $(test_exes) $(test_dir)/end_to_end_test.exe
 	$(CXX) $(CXXFLAGS) -I. \
 					   $(test_dir)/test_name_conflict_file_with_non_static_func.cpp \
 					   $(test_dir)/test_name_conflict_file_with_tests.cpp \
-					   -o no_conflict.exe
+					   -o $(test_dir)/no_conflict.exe
 
 	! $(CXX) $(CXXFLAGS_NO_WARNINGS) -I. $(test_dir)/array_compare_error.cpp
 	! $(CXX) $(CXXFLAGS_NO_WARNINGS) -I. $(test_dir)/missing_overload_error.cpp
@@ -39,13 +39,18 @@ test: $(test_exes) $(test_dir)/end_to_end_test.exe
 
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe should_pass,run_subset_of_tests_test)
 	$(call run_and_diff,$(test_dir)/end_to_end_test.exe should_pass -q should_fail,quiet_run_subset_of_tests)
-	$(call run_and_diff,$(test_dir)/end_to_end_test.exe -e ".*almost.*",regexp_test1)
-	$(call run_and_diff,$(test_dir)/end_to_end_test.exe --regexp ".*almost.*" "should.*",regexp_test2)
 	$(call run_and_diff,$(test_dir)/pairs_and_sequences.exe,pairs_and_sequences)
 	$(call run_and_diff,$(test_dir)/sequence_equal.exe,sequence_equal)
 	$(call run_and_diff,$(test_dir)/string_equal.exe,string_equal)
 	./$(test_dir)/size_t_and_int.exe
 	$(call run_and_diff,$(test_dir)/char_array.exe,char_array)
+
+	$(CXX) $(CXXFLAGS) -DUNIT_TEST_ENABLE_REGEXP -I. \
+					   $(test_dir)/end_to_end_test.cpp \
+					   -o $(test_dir)/end_to_end_test_regexp.exe
+	$(call run_and_diff,$(test_dir)/end_to_end_test_regexp.exe -e ".*almost.*",regexp_test1)
+	$(call run_and_diff,$(test_dir)/end_to_end_test_regexp.exe --regexp ".*almost.*" "should.*",regexp_test2)
+
 	@echo TESTS PASSED
 
 %.o: %.cpp

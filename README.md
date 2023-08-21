@@ -104,10 +104,9 @@ You can use any amount of these special asserts in your test cases. You can also
 ## Command line options
 ```console
 $ ./my_tests.exe -h
-usage: ./my_tests.exe [-h] [-e] [-n] [-q] [[TEST_NAME] ...]
+usage: ./my_tests.exe [-h] [-n] [-q] [[TEST_NAME] ...]
 optional arguments:
  -h, --help		 show this help message and exit
- -e, --regexp		 treat TEST_NAME as a regular expression
  -n, --show_test_names	 print the names of all discovered test cases and exit
  -q, --quiet		 print a reduced summary of test results
  TEST_NAME ...		 run only the test cases whose names are listed here. Note: If no test names are specified, all discovered tests are run by default.
@@ -133,6 +132,39 @@ PASS
 
 *** Results ***
 ** Test case 'bool_is_true': PASS
+*** Summary ***
+Out of 1 tests run:
+0 failure(s), 0 error(s)
+```
+
+### Enabling regular expressions
+By default, the unit test framework looks for exact matches to the
+test names supplied at the command line. Matching via regular
+expressions can be enabled by defining the `UNIT_TEST_ENABLE_REGEXP`
+macro to 1 prior to #including `unit_test_framework.hpp` (or when
+compiling the test executable, such as with
+`-DUNIT_TEST_ENABLE_REGEXP` for GCC or Clang), and then passing the
+`-e` flag to the test executable.
+
+```console
+$ g++ -std=c++11 -DUNIT_TEST_ENABLE_REGEXP -o my_tests.exe my_tests.cpp
+$ ./my_tests.exe -h
+usage: ./my_tests.exe [-h] [-e] [-n] [-q] [[TEST_NAME] ...]
+optional arguments:
+ -h, --help		 show this help message and exit
+ -e, --regexp		 treat TEST_NAME as a regular expression
+ -n, --show_test_names	 print the names of all discovered test cases and exit
+ -q, --quiet		 print a reduced summary of test results
+ TEST_NAME ...		 run only the test cases whose names are listed here. Note: If no test names are specified, all discovered tests are run by default.
+```
+
+```console
+$ ./my_tests.exe -e "bool.*"
+Running test: bool_is_true
+PASS
+
+*** Results ***
+** Test case "bool_is_true": PASS
 *** Summary ***
 Out of 1 tests run:
 0 failure(s), 0 error(s)
