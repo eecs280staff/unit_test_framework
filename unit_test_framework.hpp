@@ -16,7 +16,9 @@
 #include <algorithm>
 #include <exception>
 #include <stdexcept>
-#include <regex>
+#if UNIT_TEST_ENABLE_REGEXP
+#  include <regex>
+#endif
 
 // For compatibility with Visual Studio
 #include <ciso646>
@@ -543,7 +545,9 @@ int TestSuite::run_tests(int argc, char** argv) {
 std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
                                                           char** argv) {
     std::vector<std::string> test_names_to_run;
+#if UNIT_TEST_ENABLE_REGEXP
     bool regexp_matching = false;
+#endif
     for (auto i = 1; i < argc; ++i) {
         if (argv[i] == std::string("--show_test_names") or
             argv[i] == std::string("-n")) {
@@ -556,18 +560,26 @@ std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
                  argv[i] == std::string("-q")) {
             TestSuite::get().enable_quiet_mode();
         }
+#if UNIT_TEST_ENABLE_REGEXP
         else if (argv[i] == std::string("--regexp") or
                  argv[i] == std::string("-e")) {
           regexp_matching = true;
         }
+#endif
         else if (argv[i] == std::string("--help") or
                  argv[i] == std::string("-h")) {
             std::cout << "usage: " << argv[0]
+#if UNIT_TEST_ENABLE_REGEXP
                       << " [-h] [-e] [-n] [-q] [[TEST_NAME] ...]\n";
+#else
+                      << " [-h] [-n] [-q] [[TEST_NAME] ...]\n";
+#endif
             std::cout
                 << "optional arguments:\n"
                 << " -h, --help\t\t show this help message and exit\n"
+#if UNIT_TEST_ENABLE_REGEXP
                 << " -e, --regexp\t\t treat TEST_NAME as a regular expression\n"
+#endif
                 << " -n, --show_test_names\t print the names of all "
                    "discovered test cases and exit\n"
                 << " -q, --quiet\t\t print a reduced summary of test results\n"
@@ -590,6 +602,7 @@ std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
             std::back_inserter(test_names_to_run),
             [](const std::pair<std::string, TestCase>& p) { return p.first; });
     }
+#if UNIT_TEST_ENABLE_REGEXP
     else if (regexp_matching) {
         std::ostringstream pattern;
         for (auto iter = test_names_to_run.begin();
@@ -607,6 +620,7 @@ std::vector<std::string> TestSuite::get_test_names_to_run(int argc,
             }
         }
     }
+#endif
     return test_names_to_run;
 }
 
