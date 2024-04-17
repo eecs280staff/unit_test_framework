@@ -1,6 +1,41 @@
 #ifndef UNIT_TEST_FRAMEWORK_HPP
 #define UNIT_TEST_FRAMEWORK_HPP
 
+// C++ unit-test framework inspired by xUnit and its derivatives.
+//
+// Authors:
+// James Perretta <jameslp@umich.edu>
+// Amir Kamil <akamil@umich.edu>
+//
+// See https://github.com/eecs280staff/unit_test_framework for
+// documentation and updates.
+//
+// License information:
+//
+// The MIT License (MIT)
+//
+// Copyright 2017-2024 James Perretta and Amir Kamil
+//
+// Permission is hereby granted, free of charge, to any person
+// obtaining a copy of this software and associated documentation
+// files (the "Software"), to deal in the Software without
+// restriction, including without limitation the rights to use, copy,
+// modify, merge, publish, distribute, sublicense, and/or sell copies
+// of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+// BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+// ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 #include <map>
 #include <utility>
 #include <string>
@@ -138,7 +173,6 @@ namespace unit_test_framework {
   };
 
   // ---------------------------------------------------------------------------
-  // Diagnostic class contributed by Amir Kamil <akamil@umich.edu>
 
   class Diagnostic {
   public:
@@ -536,7 +570,7 @@ namespace unit_test_framework {
       std::is_same<bool, decltype(std::declval<First>() !=
       std::declval<Second>())>::value and
       (!std::is_array<typename std::remove_reference<First>::type>::value or
-      !std::is_array<typename std::remove_reference<Second>::type>::value),
+       !std::is_array<typename std::remove_reference<Second>::type>::value),
       void>::type;
 
     template <typename First, typename Second>
@@ -702,12 +736,12 @@ namespace unit_test_framework {
 
 //------------------------------------------------------------------------------
 
-// THIS IS PART OF A WORKAROUND TO DEAL WITH STATIC
-// INITIALIZATION SHENANIGANS.
-// DO NOT CHANGE THIS UNLESS YOU REEEEALLY KNOW WHAT
-// YOU'RE DOING. CONTACT akamil@umich.edu or jameslp@umich.edu IF
-// YOU HAVE QUESTIONS ABOUT THIS.
-#define TEST_SUITE_INSTANCE()                           \
+// THIS IS PART OF A WORKAROUND TO DEAL WITH STATIC INITIALIZATION
+// SHENANIGANS.
+// DO NOT CHANGE THIS UNLESS YOU REEEEALLY KNOW WHAT YOU'RE DOING.
+// CONTACT akamil@umich.edu or jameslp@umich.edu IF YOU HAVE QUESTIONS
+// ABOUT THIS.
+#define TEST_SUITE_INSTANCE()                                   \
   static unit_test_framework::TestSuiteDestroyer destroyer;     \
   bool unit_test_framework::TestSuite::incomplete = false;      \
   unit_test_framework::TestSuite*                               \
