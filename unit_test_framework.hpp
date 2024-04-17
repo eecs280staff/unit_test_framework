@@ -23,11 +23,16 @@
 // For compatibility with Visual Studio
 #include <ciso646>
 
+// For demangling type names
+#if defined(__clang__) || defined(__GLIBCXX__) || defined(__GLIBCPP__)
+#  include <cxxabi.h>
+#  include <cstdlib>
+#endif
+
+
 // Place the following line of code in your test file to generate a
 // main() function:
 // TEST_MAIN()
-
-using Test_func_t = void (*)();
 
 
 #define TEST(name)                                      \
@@ -41,8 +46,33 @@ using Test_func_t = void (*)();
   }                                                     \
   TEST_SUITE_INSTANCE();
 
+#define ASSERT_EQUAL(first, second)                             \
+  Assertions::assert_equal((first), (second), __LINE__,         \
+               "ASSERT_EQUAL(" #first ", " #second ")");
+
+#define ASSERT_NOT_EQUAL(first, second)                                 \
+  Assertions::assert_not_equal((first), (second), __LINE__,             \
+                   "ASSERT_NOT_EQUAL(" #first ", " #second ")");
+
+#define ASSERT_SEQUENCE_EQUAL(first, second)                            \
+  Assertions::assert_sequence_equal((first), (second), __LINE__,        \
+                        "ASSERT_SEQUENCE_EQUAL(" #first ", " #second ")");
+
+#define ASSERT_TRUE(value)                                      \
+  Assertions::assert_true((value), __LINE__, "ASSERT_TRUE(" #value ")");
+
+#define ASSERT_FALSE(value)                                     \
+  Assertions::assert_false((value), __LINE__, "ASSERT_FALSE(" #value ")");
+
+#define ASSERT_ALMOST_EQUAL(first, second, precision)                   \
+  Assertions::assert_almost_equal((first), (second), (precision),       \
+                                  __LINE__,                             \
+                                  "ASSERT_ALMOST_EQUAL(" #first ", "    \
+                                  #second ", " #precision ")");
 
 // ----------------------------------------------------------------------------
+
+using Test_func_t = void (*)();
 
 class ExitSuite : public std::exception {
 public:
@@ -93,11 +123,6 @@ private:
 
 // ----------------------------------------------------------------------------
 // Diagnostic class contributed by Amir Kamil <akamil@umich.edu>
-
-#if defined(__clang__) || defined(__GLIBCXX__) || defined(__GLIBCPP__)
-#include <cxxabi.h>
-#include <cstdlib>
-#endif
 
 class Diagnostic {
 public:
@@ -474,30 +499,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-
-#define ASSERT_EQUAL(first, second)                             \
-  Assertions::assert_equal((first), (second), __LINE__,         \
-               "ASSERT_EQUAL(" #first ", " #second ")");
-
-#define ASSERT_NOT_EQUAL(first, second)                                 \
-  Assertions::assert_not_equal((first), (second), __LINE__,             \
-                   "ASSERT_NOT_EQUAL(" #first ", " #second ")");
-
-#define ASSERT_SEQUENCE_EQUAL(first, second)                            \
-  Assertions::assert_sequence_equal((first), (second), __LINE__,        \
-                        "ASSERT_SEQUENCE_EQUAL(" #first ", " #second ")");
-
-#define ASSERT_TRUE(value)                                      \
-  Assertions::assert_true((value), __LINE__, "ASSERT_TRUE(" #value ")");
-
-#define ASSERT_FALSE(value)                                     \
-  Assertions::assert_false((value), __LINE__, "ASSERT_FALSE(" #value ")");
-
-#define ASSERT_ALMOST_EQUAL(first, second, precision)                   \
-  Assertions::assert_almost_equal((first), (second), (precision),       \
-                                  __LINE__,                             \
-                                  "ASSERT_ALMOST_EQUAL(" #first ", "    \
-                                  #second ", " #precision ")");
 
 class Assertions {
 private:
