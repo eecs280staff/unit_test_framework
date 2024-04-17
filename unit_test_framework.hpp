@@ -21,7 +21,7 @@
 #endif
 
 // For compatibility with Visual Studio
-#include <ciso646>
+#include <iso646.h> // ciso646 removed in C++20
 
 // For demangling type names
 #if defined(__clang__) || defined(__GLIBCXX__) || defined(__GLIBCPP__)
