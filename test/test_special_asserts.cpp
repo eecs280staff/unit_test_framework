@@ -13,14 +13,14 @@ void test_assert_false();
 void test_assert_almost_equal();
 
 
-#define ASSERT_TEST_FAILURE_RAISED(expr)                                      \
-    try {                                                                     \
-        expr;                                                                 \
-        cout << "TestFailure not raised" << endl;                             \
-        assert(false);                                                        \
-    }                                                                         \
-    catch (TestFailure & e) {                                                 \
-        cout << e.to_string() << endl;                                        \
+#define ASSERT_TEST_FAILURE_RAISED(expr)                \
+    try {                                               \
+        expr;                                           \
+        cout << "TestFailure not raised" << endl;       \
+        assert(false);                                  \
+    }                                                   \
+    catch (unit_test_framework::TestFailure & e) {      \
+      cout << e.to_string() << endl;                    \
     }
 
 

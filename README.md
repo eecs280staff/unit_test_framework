@@ -1,7 +1,7 @@
 Unit Test Framework
 ===================
 
-[![`main` Build Status](https://travis-ci.com/eecs280staff/unit_test_framework.svg?branch=main)](https://travis-ci.com/eecs280staff/unit_test_framework)
+![Regression Tests](https://github.com/eecs280staff/unit_test_framework/actions/workflows/continuous_integration.yml/badge.svg?branch=main)
 
 A lightweight, easy to use, C++11 unit testing framework implemented in a single `.hpp` file.
 

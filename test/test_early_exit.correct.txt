@@ -1,0 +1,2 @@
+Running test: early_exit
+ERROR: premature call to exit()

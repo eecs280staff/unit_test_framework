@@ -1,0 +1,57 @@
+test_assert_equal
+In ASSERT_EQUAL(42, 3), line 81:
+42 != 3
+
+In ASSERT_EQUAL(42.6, 42.5), line 82:
+42.6 != 42.5
+
+In ASSERT_EQUAL(string("spam"), string("EGG")), line 83:
+spam != EGG
+
+In ASSERT_EQUAL(&i + 1, &i), line 84:
+<HEX VALUE> != <HEX VALUE>
+
+In ASSERT_EQUAL(true, false), line 85:
+1 != 0
+
+In ASSERT_EQUAL(Printable{1}, Printable{2}), line 87:
+Printable: 1 != Printable: 2
+
+In ASSERT_EQUAL(NotPrintable{1}, NotPrintable{2}), line 88:
+<NotPrintable object> != <NotPrintable object>
+
+test_assert_not_equal
+In ASSERT_NOT_EQUAL(42, 42), line 102:
+Values unexpectedly equal: 42 == 42
+
+In ASSERT_NOT_EQUAL(42.5, 42.5), line 103:
+Values unexpectedly equal: 42.5 == 42.5
+
+In ASSERT_NOT_EQUAL(string("spam"), string("spam")), line 105:
+Values unexpectedly equal: spam == spam
+
+In ASSERT_NOT_EQUAL(&i, &i), line 106:
+Values unexpectedly equal: <HEX VALUE> == <HEX VALUE>
+
+In ASSERT_NOT_EQUAL(true, true), line 107:
+Values unexpectedly equal: 1 == 1
+
+In ASSERT_NOT_EQUAL(Printable{1}, Printable{1}), line 109:
+Values unexpectedly equal: Printable: 1 == Printable: 1
+
+In ASSERT_NOT_EQUAL(NotPrintable{2}, NotPrintable{2}), line 111:
+Values unexpectedly equal: <NotPrintable object> == <NotPrintable object>
+
+test_assert_true
+In ASSERT_TRUE(false), line 118:
+Expected true, but was false
+
+test_assert_false
+In ASSERT_FALSE(true), line 125:
+Expected false, but was true
+
+test_assert_almost_equal
+In ASSERT_ALMOST_EQUAL(42.1, 42.3, 0.1), line 134:
+Values too far apart: 42.100000000000001421 and 42.299999999999997158
+
+All tests passed
