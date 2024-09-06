@@ -22,11 +22,12 @@ First, you will need the file `unit_test_framework.hpp`. This file is included w
 $ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/main/unit_test_framework.hpp
 ```
 
-For this tutorial, you'll need two files, `tutorial.hpp` and `tutorial.cpp`.
+For this tutorial, you'll need three starter files, `tutorial.hpp`, `tutorial.cpp`, and `Makefile`.
 
 ```console
 $ wget https://eecs280staff.github.io/unit_test_framework/tutorial.hpp
 $ wget https://eecs280staff.github.io/unit_test_framework/tutorial.cpp
+$ wget https://eecs280staff.github.io/unit_test_framework/Makefile
 ```
 
 These functions contain implementations of two functions (`slideRight()` and `flip()`) that work with vectors. The implementations each contain a bug! You'll catch the bugs by writing tests.
@@ -63,7 +64,7 @@ You're probably wondering why some of the syntax in this code looks unusual. Tha
 Compile and run this test case with the following two commands:
 
 ```console
-$ g++ -Wall -Werror -pedantic -g -std=c++17 tutorial.cpp tutorial_tests.cpp -o tutorial_tests.exe
+$ make tutorial_tests.exe
 $ ./tutorial_tests.exe
 Running test: numbers_are_equal
 PASS
@@ -149,7 +150,7 @@ Note that the `add_floating_point` test case uses `ASSERT_ALMOST_EQUAL()` with a
 Feel free to add these tests to `tutorial_tests.cpp` and run them to see how they work. For example:
 
 ```console
-$ g++ -Wall -Werror -pedantic -g -std=c++17 tutorial.cpp tutorial_tests.cpp -o tutorial_tests.exe
+$ make tutorial_tests.exe
 $ ./tutorial_tests.exe
 Running test: add_basic
 PASS
@@ -206,7 +207,7 @@ TEST_MAIN() // No semicolon!
 Compile and run the tests with the following commands:
 
 ```console
-$ g++ -Wall -Werror -pedantic -O1 -std=c++17 tutorial.cpp tutorial_tests.cpp -o tutorial_tests.exe
+$ make tutorial_tests.exe
 $ ./tutorial_tests.exe
 Running test: test_flip_1
 PASS
