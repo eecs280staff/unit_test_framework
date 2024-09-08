@@ -12,8 +12,8 @@ double add(double first, double second) {
 //           contain [4,0,1,3,3]
 void slideRight(std::vector<int> &v) {
   // NOTE - This implementation contains a bug!
-  for(int i = 1; i < static_cast<int>(v.size()); ++i) {
-    v[i] = v[i-1];
+  for (int i = 1; i < static_cast<int>(v.size()); ++i) {
+    v.at(i) = v.at(i-1);
   }
 }
 
@@ -25,10 +25,10 @@ void flip(std::vector<int> &v) {
   // NOTE - This implementation contains a bug!
   int left = 0;
   int right = static_cast<int>(v.size()) - 1;
-  while(left != right) {
-    int temp = v[left];
-    v[left] = v[right];
-    v[right] = temp;
+  while (left != right) {
+    int temp = v.at(left);
+    v.at(left) = v.at(right);
+    v.at(right) = temp;
     ++left;
     --right;
   }

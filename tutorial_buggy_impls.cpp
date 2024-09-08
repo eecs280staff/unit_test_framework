@@ -36,47 +36,43 @@ using namespace std;
 // Bug Description: The implementation slides left instead of right.
 
 void slideRight(std::vector<int> &v) {
-  int *arr = v.data();
-  int n = static_cast<int>(v.size());
-  int first = *arr;
-  for(int *ptr = arr+1; ptr < arr + n; ++ptr) {
-    *(ptr-1) = *ptr;
+  if (v.empty()) { return; }
+  int first = v.at(0);
+  for (int i = 1; i < static_cast<int>(v.size()); ++i) {
+    v.at(i-1) = v.at(i);
   }
-  *(arr+n-1) = first;
+  v.at(v.size()-1) = first;
 }
 
 #elif defined SLIDE_RIGHT_BUG_2
 // Bug Description: The implementation doesn't copy the last element to the beginning.
 
 void slideRight(std::vector<int> &v) {
-  int *arr = v.data();
-  int n = static_cast<int>(v.size());
-  for (int* p = arr+n-1; arr < p; --p)
-    *p = *(p-1);
+  for (int i = static_cast<int>(v.size()) - 1; i > 0; --i) {
+    v.at(i) = v.at(i-1);
+  }
 }
 
 #elif defined SLIDE_RIGHT_BUG_3
 // Bug Description: The implementation fails for an empty vector
 
 void slideRight(std::vector<int> &v) {
-  if (v.empty()) { v[0] = v[100000]; return; }
-  int *arr = v.data();
-  int n = static_cast<int>(v.size());
-  int last = *(arr+n-1);
-  for (int* p = arr+n-1; arr < p; --p)
-    *p = *(p-1);
-  *arr = last;
+  int last = v.at(v.size() - 1);
+  for (int i = static_cast<int>(v.size()) - 1; i > 0; --i) {
+    v.at(i) = v.at(i-1);
+  }
+  v.at(0) = last;
 }
 
 #else
 
 void slideRight(std::vector<int> &v) {
-  int *arr = v.data();
-  int n = static_cast<int>(v.size());
-  int last = *(arr+n-1);
-  for (int* p = arr+n-1; arr < p; --p)
-    *p = *(p-1);
-  *arr = last;
+  if (v.empty()) { return; }
+  int last = v.at(v.size() - 1);
+  for (int i = static_cast<int>(v.size()) - 1; i > 0; --i) {
+    v.at(i) = v.at(i-1);
+  }
+  v.at(0) = last;
 }
 
 #endif
@@ -89,59 +85,55 @@ void slideRight(std::vector<int> &v) {
 // Bug Description: The function does nothing.
 
 void flip(std::vector<int> &v) {
-  int *arr = v.data();
-  int n = static_cast<int>(v.size());
-  for (int *p = arr+n-1; arr < p; ++arr, --p) {
-    // Accidentally swapping pointers instead of values. arr and p are
+  for (int front = 0, back = static_cast<int>(v.size() - 1); front < back;
+       ++front, --back) {
+    // Accidentally swapping indices instead of values. front and back are
     // swapped and immediately "cross over" each other.
-    int *t = arr;
-    arr = p;
-    p = t;
+    int tmp = front;
+    front = back;
+    back = tmp;
   }
 }
 
 #elif defined FLIP_BUG_2
 // Bug Description: Logical error in swapping middle elements.
-// Only manifests for odd length arrays.
+// Only manifests for odd length vectors.
 
 void flip(std::vector<int> &v) {
-  int *arr = v.data();
   int n = static_cast<int>(v.size());
   for (int i = 0; i < (n-1)/2; ++i) {
-    int t = arr[i];
-    arr[i] = arr[n-1-i];
-    arr[n-1-i] = t;
+    int tmp = v.at(i);
+    v.at(i) = v.at(n-1-i);
+    v.at(n-1-i) = tmp;
   }
   
-  // manually flip middle elements (incorrectly, for odd length arrays)
-  int t = arr[n/2];
-  arr[n/2] = arr[n/2-1];
-  arr[n/2-1] = t;
+  // manually flip middle elements (incorrectly, for odd length vectors)
+  int tmp = v.at(n/2);
+  v.at(n/2) = v.at(n/2-1);
+  v.at(n/2-1) = tmp;
 }
 
 #elif defined FLIP_BUG_3
-// Bug Description: Allows left and right pointers to cross over each other.
-// Pointers will go outside the arrays and eventually crash. Only manifests
-// for even length arrays.
+// Bug Description: Allows left and right indices to cross over each other.
+// Indices will go outside the vectors and eventually crash. Only manifests
+// for even length vectors.
 void flip(std::vector<int> &v) {
-  int *arr = v.data();
-  int n = static_cast<int>(v.size());
-  for (int *p = arr+n-1; arr != p; ++arr, --p) {
-    int t = *arr;
-    *arr = *p;
-    *p = t;
+  for (int front = 0, back = static_cast<int>(v.size()-1); front != back;
+       ++front, --back) {
+    int tmp = v.at(front);
+    v.at(front) = v.at(back);
+    v.at(back) = tmp;
   }
 }
 
 #else
 
 void flip(std::vector<int> &v) {
-  int *arr = v.data();
-  int n = static_cast<int>(v.size());
-  for (int *p = arr+n-1; arr < p; ++arr, --p) {
-    int t = *arr;
-    *arr = *p;
-    *p = t;
+  for (int front = 0, back = static_cast<int>(v.size()-1); front < back;
+       ++front, --back) {
+    int tmp = v.at(front);
+    v.at(front) = v.at(back);
+    v.at(back) = tmp;
   }
 }
 
