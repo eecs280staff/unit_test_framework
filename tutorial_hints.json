@@ -1,0 +1,20 @@
+{
+  "SLIDE_RIGHT_BUG_1": [
+    "slideRight() Bug #1 - Make sure you've tested slideRight() with several different numbers in the vector."
+  ],
+  "SLIDE_RIGHT_BUG_2": [
+    "slideRight() Bug #2 - Make sure you've tested cases where each value in the vector is different."
+  ],
+  "SLIDE_RIGHT_BUG_3": [
+    "slideRight() Bug #3 - Make sure you've tested cases where the vector is empty."
+  ],
+  "FLIP_BUG_1": [
+    "flip() Bug #1 - Make sure you have tests for the flip() function and you are verifying results in each test. This bug should manifest on almost any test case."
+  ],
+  "FLIP_BUG_2": [
+    "flip() Bug #2 - Make sure you have tests for some vectors with an odd number of elements."
+  ],
+  "FLIP_BUG_3": [
+    "flip() Bug #3 - Make sure you have tests for some vectors with an even number of elements."
+  ]
+}

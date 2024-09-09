@@ -116,8 +116,9 @@ void flip(std::vector<int> &v) {
 #elif defined FLIP_BUG_3
 // Bug Description: Allows left and right indices to cross over each other.
 // Indices will go outside the vectors and eventually crash. Only manifests
-// for even length vectors.
+// for even length (non-empty) vectors.
 void flip(std::vector<int> &v) {
+  if (v.empty()) { return; }
   for (int front = 0, back = static_cast<int>(v.size()-1); front != back;
        ++front, --back) {
     int tmp = v.at(front);
