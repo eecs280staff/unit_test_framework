@@ -234,7 +234,9 @@ On the other hand, when run against a correct implementation, all of your tests 
 we call it _valid_.
 
 Once you feel your tests are thorough, submit `tutorial_tests.cpp` to the unit test framework tutorial
-[autograder](https://autograder.io/). It will check your tests against a set of buggy implementations
+[autograder](https://autograder.io/). (If you copied in the other tests for the `add()` function, make sure to remove them before submitting.)
+
+The autograder will check your tests against a set of buggy implementations
 of `slideRight` and `flip`, similar to the buggy versions functions provided with
 this tutorial. To earn points, your tests must detect
 (i.e. fail when run against) each of the bugs. Note that the autograder will
