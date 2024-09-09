@@ -9,8 +9,7 @@ In this tutorial, you will learn how to write test cases using a lightweight fra
 - [Setting Up](#setting-up)
 - [Special Test Assertions](#special-test-assertions)
 - [Example: Tests for an `add()` function](#example-tests-for-an-add-function)
-- [Writing Unit Tests for `slideright()` and `flip() vector functions`](#writing-unit-tests-for-slideright-and-flip-vector-functions)
-- [Writing Helper Functions for Tests](#writing-helper-functions-for-tests)
+- [Writing Unit Tests for `slideright()` and `flip()` vector functions](#writing-unit-tests-for-slideright-and-flip-vector-functions)
 
 <!-- tocstop -->
 
