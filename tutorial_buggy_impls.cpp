@@ -26,6 +26,11 @@
 
 using namespace std;
 
+// EFFECTS: Returns the sum of first and second.
+double add(double first, double second) {
+  return first + second;
+}
+
 // MODIFIES: the elements in v
 // EFFECTS:  All elements are "shifted" right by one unit, with the
 //           last element wrapping around to the beginning.
