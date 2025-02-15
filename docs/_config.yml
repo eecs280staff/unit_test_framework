@@ -1,0 +1,21 @@
+# This config file renders the "primer-spec" theme from:
+# https://github.com/eecs485staff/primer-spec
+# This theme is built on the default GitHub Markdown theme "Primer", and
+# optionally renders a sidebar to easily navigate project specs.
+
+title: "Unit Test Framework"
+favicon: https://eecs280staff.github.io/eecs280.org/assets/images/eecs280favicon.ico
+
+# Jekyll build settings
+remote_theme: eecs485staff/primer-spec
+plugins:
+  - jekyll-remote-theme
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-relative-links
+  - jekyll-default-layout
+kramdown:
+  input: GFM
+readme_index:
+  remove_originals: true
+  with_frontmatter: true
