@@ -1,19 +1,13 @@
+---
+layout: spec
+---
+
 # Tutorial: Unit Test Framework
+{: .primer-spec-toc-ignore }
 
 In this tutorial, you will learn how to write test cases using a lightweight framework that functions similarly to unit test frameworks used in real-life software development.
 
-# Table of Contents
-
-<!-- toc -->
-
-- [Setting Up](#setting-up)
-- [Special Test Assertions](#special-test-assertions)
-- [Example: Tests for an `add()` function](#example-tests-for-an-add-function)
-- [Writing Unit Tests for `slideright()` and `flip()` vector functions](#writing-unit-tests-for-slideright-and-flip-vector-functions)
-
-<!-- tocstop -->
-
-# Setting Up
+## Setting Up
 
 First, you will need the file `unit_test_framework.hpp`. This file is included with the starter code for EECS 280 projects where you are expected to use it. You can also download it directly (e.g. for this tutorial) with the following command.
 
@@ -94,7 +88,7 @@ Out of 1 tests run:
 
 You can pass any number of test names as command line arguments, and it will only run the ones you've specified.
 
-# Special Test Assertions
+## Special Test Assertions
 
 One of the main reasons for using the special assertions provided by the framework is that they allow the framework to run all of your tests and report which ones passed and which ones failed. As you may have noticed, when you use regular `assert()` in your test cases, they automatically stop at the first failure. This can make it difficult to debug errors in one test that are actually caused by a function whose test cases didn't get a chance to run yet.
 
@@ -109,7 +103,7 @@ Assertion | Description
 <code>ASSERT_ALMOST_EQUAL(<i>double first</i>, <i>double second</i>, <i>double precision</i>)</code> | If `first` and `second` are not equal within `precision`, the test will fail.
 <code>ASSERT_SEQUENCE_EQUAL(<i>first</i>, <i>second</i>)</code> | `first` and `second` must be sequences (e.g. arrays, vectors, lists). If `first` and `second` do not have equal elements, the test will fail.
 
-# Example: Tests for an `add()` function
+## Example: Tests for an `add()` function
 
 Consider the `add()` function, declared in `tutorial.hpp` and defined in `tutorial.cpp`:
 
@@ -173,7 +167,7 @@ Out of 5 tests run:
 0 failure(s), 0 error(s)
 ```
 
-# Exercise: Writing Unit Tests for `slideright()` and `flip()` vector functions
+## Exercise: Writing Unit Tests for `slideright()` and `flip()` vector functions
 
 Now, let's add some real test cases for `slideRight()` and `flip()` to `tutorial_tests.cpp`.
 
@@ -240,6 +234,7 @@ this tutorial. To earn points, your tests must detect
 (i.e. fail when run against) each of the bugs. Note that the autograder will
 discard any tests that are not valid when checked against a correct solution.
 
+<div class="primer-spec-callout info" markdown="1">
 **Note**: Because these functions work with vectors, it's possible that a buggy version might go outside the bounds of the vector when given one of your tests, causing a segfault or other crash. For example:
 
 ```console
@@ -251,3 +246,4 @@ Segmentation fault
 ```
 
 This still "counts" as catching the bug, because the program exits with a non-zero exit status (as is the case for a failed `ASSERT`) and we are alerted to the presence of a bug.
+</div>
