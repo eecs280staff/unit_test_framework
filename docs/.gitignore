@@ -1,0 +1,8 @@
+# This .gitignore file is for locally-rendered Jekyll sites.
+
+# Locally rendered website
+_site
+
+# Other Jekyll files
+.sass-cache
+.jekyll-metadata
