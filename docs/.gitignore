@@ -6,3 +6,7 @@ _site
 # Other Jekyll files
 .sass-cache
 .jekyll-metadata
+
+# Locking Ruby library version creates a ton of headaches for local preview
+# and GitHub pages deploy
+Gemfile.lock
